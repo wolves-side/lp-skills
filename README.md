@@ -1,120 +1,166 @@
-# AILD â€” AI Landing Page Design Pipeline
+# AILD — AI Landing Page Design Pipeline
 
-## O que Ã© isso
+## O que é isso
 
-Um sistema de 10 Claude Skills que transforma uma conversa com um cliente em uma landing page completa, profissional, responsiva e otimizada para conversÃ£o â€” sem templates genÃ©ricos, sem Figma, sem developer humano no meio.
+Um sistema de **15 skills de IA** que transforma uma conversa com um cliente em uma landing page completa, profissional, responsiva e otimizada para conversão — sem templates genéricos, sem Figma, sem developer humano no meio.
 
-O pipeline inteiro roda dentro do Claude. Cada skill Ã© um agente especialista que recebe um input estruturado, executa seu trabalho, e entrega um output que alimenta o prÃ³ximo agente. Do briefing ao HTML final, passando por copy, arquitetura, design, build, review e rebuild.
+O pipeline é orquestrado por uma **skill master** (`lp-master`) que conduz 8 fases sequenciais, do ICP Discovery ao Deploy. Cada skill é um agente especialista que recebe um input estruturado, executa seu trabalho, e entrega um output que alimenta o próximo agente.
 
-**10 skills | 36 arquivos | 405KB | ~75 min de execuÃ§Ã£o completa**
+**15 skills | 59 arquivos | 8 fases | ~75 min de execução completa**
 
 ---
 
 ## Por que existe
 
-Landing pages sÃ£o o gargalo de qualquer funil digital. O processo tradicional envolve: briefing com o cliente (1-2 reuniÃµes), copywriter (3-5 dias), designer (3-5 dias), developer (3-5 dias), revisÃ£o (mais 3-5 dias). Total: 2-4 semanas e R$5-15K por pÃ¡gina.
+Landing pages são o gargalo de qualquer funil digital. O processo tradicional envolve: briefing com o cliente (1-2 reuniões), copywriter (3-5 dias), designer (3-5 dias), developer (3-5 dias), revisão (mais 3-5 dias). Total: 2-4 semanas e R$5-15K por página.
 
-O AILD comprime isso em ~75 minutos de interaÃ§Ã£o com o Claude, mantendo (e em muitos casos superando) a qualidade do processo tradicional. NÃ£o porque corta corners â€” porque elimina os handoffs, mal-entendidos e retrabalho que consomem 80% do tempo.
+O AILD comprime isso em ~75 minutos de interação, mantendo (e em muitos casos superando) a qualidade do processo tradicional. Não porque corta corners — porque elimina os handoffs, mal-entendidos e retrabalho que consomem 80% do tempo.
 
-A diferenÃ§a fundamental: cada agente do pipeline tem acesso ao contexto COMPLETO do projeto. O copywriter sabe o que a anÃ¡lise competitiva encontrou. O builder sabe exatamente o que o architect especificou. O QA sabe contra o que validar. Nenhum profissional humano em um time fragmentado tem essa visÃ£o integrada.
-
----
-
-## As Fases
-
-### Phase 0 â€” Intake (4 skills)
-
-**Objetivo:** Extrair TUDO que o pipeline precisa saber sobre a marca, o produto e o mercado.
-
-**Como funciona:**
-
-O `lp-brand-strategist` conduz uma entrevista de ~15 minutos com o cliente, organizada em 5 blocos: identidade, histÃ³ria do fundador, diferenciaÃ§Ã£o, voz da marca e prova social. NÃ£o faz perguntas genÃ©ricas â€” tem "pressure questions" pra quando o cliente dÃ¡ respostas vagas. Se alguÃ©m diz "somos inovadores", o skill empurra: "inovadores comparado a quem? O que vocÃª faz que eles literalmente nÃ£o conseguem?"
-
-O `lp-product-architect` mapeia o produto/serviÃ§o em profundidade. Classifica o tipo de LP (sÃ£o 7: venda de serviÃ§o, venda direta, captura de lead, evento, waitlist, comunidade, portfÃ³lio) e cada tipo dispara perguntas diferentes. O diferencial real estÃ¡ na arquitetura de oferta: o skill desafia garantias fracas, sugere price anchoring, mapeia objeÃ§Ãµes com respostas prontas, e extrai a transformaÃ§Ã£o BEFOREâ†’AFTERâ†’PROOFâ†’MECHANISM.
-
-O `lp-competitive-intel` Ã© o Ãºnico agente 100% automatizado do intake. Recebe os nomes/URLs dos concorrentes (extraÃ­dos nas entrevistas anteriores ou via busca) e scrapa as landing pages deles. Analisa padrÃµes de copy, visual, oferta, e gera "attack angles" â€” nÃ£o apenas "o que eles fazem" mas "como explorar o que eles NÃƒO fazem". Se todos usam glassmorphism, a recomendaÃ§Ã£o Ã© ir pro editorial minimalism.
-
-O `lp-brief-synthesizer` pega os 3 documentos (Brand Brief, Product Brief, Competitive Analysis) e sintetiza o Master Brief. NÃ£o Ã© um merge â€” Ã© uma sÃ­ntese que gera coisas NOVAS: um positioning statement que nÃ£o existe em nenhum input individual, uma messaging hierarchy, 5 candidate headlines, e um GAP audit com 3 nÃ­veis de prioridade (ðŸ”´ blockers, ðŸŸ¡ important, ðŸŸ¢ nice-to-have).
-
-**Output:** Master Brief â€” o documento estratÃ©gico que alimenta todas as fases seguintes.
+A diferença fundamental: cada agente do pipeline tem acesso ao contexto COMPLETO do projeto. O copywriter sabe o que a análise competitiva encontrou. O builder sabe exatamente o que o architect especificou. O QA sabe contra o que validar.
 
 ---
 
-### Phase 1 â€” Strategy & Positioning (3 skills)
+## Estrutura do Repositório
 
-**Objetivo:** Transformar o Master Brief em copy real e especificaÃ§Ã£o estrutural completa.
+```
+lp-skill/
+├── README.md
+├── lp-master/                               ← 🎯 Skill orquestradora
+│   └── SKILL.md
+│
+├── fase-1-pesquisa-icp/
+│   └── lp-icp-discovery/                    ← Pesquisa de cliente ideal
+│
+├── fase-2-empresa-produto/
+│   ├── lp-brand-strategist/                 ← Entrevista de marca
+│   ├── lp-product-architect/                ← Mapeamento de produto/oferta
+│   ├── lp-competitive-intel/                ← Análise de concorrência
+│   └── lp-brief-synthesizer/                ← Síntese → Master Brief
+│
+├── fase-3-estrategia-copy/
+│   ├── lp-copywriter/                       ← Copy completo da página
+│   ├── lp-page-architect/                   ← Estrutura e wireframes
+│   └── lp-page-spec-assembler/              ← Merge → Page Specification
+│
+├── fase-4-design-system/
+│   └── lp-design-system/                    ← Tokens CSS, componentes, animações
+│
+├── fase-5-desenvolvimento/
+│   └── lp-page-builder/                     ← HTML self-contained
+│
+├── fase-6-analise-critica/
+│   ├── lp-page-qa/                          ← ~65 checks automatizados
+│   └── lp-expert-panel/                     ← Painel de 5 especialistas
+│
+├── fase-7-revisao-final/
+│   └── lp-page-rebuild/                     ← Aplicação cirúrgica de feedback
+│
+└── fase-8-deploy/
+    └── lp-deployment/                       ← Vercel, Cloudflare, Firebase
+```
 
-**Como funciona:**
-
-O `lp-copywriter` e o `lp-page-architect` trabalham em PARALELO (economiza metade do tempo vs. sequencial).
-
-O copywriter escreve TODO o texto da pÃ¡gina, seÃ§Ã£o por seÃ§Ã£o. NÃ£o sÃ£o "sugestÃµes de headline" â€” sÃ£o parÃ¡grafos completos, CTAs com microcopy, FAQ com respostas detalhadas, alt text pra imagens. Cada seÃ§Ã£o tem um framework psicolÃ³gico especÃ­fico: PAS (Problem-Agitation-Solution) pra seÃ§Ã£o de problema, BAB (Before-After-Bridge) pra soluÃ§Ã£o, Proof Stack pra credibilidade, Risk Reversal pra closing. SÃ£o 7 frameworks, cada um adaptado ao papel da seÃ§Ã£o. Gera 3 variantes de headline com Ã¢ngulos diferentes (resultado, dor, mecanismo) e 3 variantes de CTA â€” nÃ£o por indecisÃ£o, mas pra teste A/B estratÃ©gico.
-
-O page architect define a estrutura com um modelo de scroll psychology que mapeia o estado mental do visitante em cada % de scroll (0% = "o que Ã© isso?", 40% = "prove", 85% = "qual Ã© a oferta?"). Produz wireframes ASCII pra cada seÃ§Ã£o, CTA map com posiÃ§Ãµes estratÃ©gicas, specs de animaÃ§Ã£o, e comportamento mobile COMPLETO â€” nÃ£o "mobile-friendly" genÃ©rico, mas "no 375px o hero faz isso, a tabela vira cards, o CTA fica full-width".
-
-O `lp-page-spec-assembler` cruza os dois documentos, detecta mismatches (copywriter escreveu 8 FAQs mas architect especificou accordion com 5?), resolve conflitos, e gera o Page Specification â€” o documento Ãºnico e executÃ¡vel que as fases de execuÃ§Ã£o consomem.
-
-**Output:** Page Specification â€” copy verbatim + wireframes + mobile specs + animation specs + form specs + tudo que builder e designer precisam, sem decisÃµes pendentes.
-
----
-
-### Phase 2 â€” Design System (skill set separado)
-
-**Objetivo:** Transformar a direÃ§Ã£o visual abstrata em CSS concreto.
-
-Transforma "editorial minimalism, bold typography, electric blue accent" em custom properties, component styles, paleta de cores com contraste validado, tipografia com pares de fontes selecionados, e sistema de spacing. Cada cliente recebe um design system ÃšNICO â€” a anÃ¡lise competitiva identificou padrÃµes visuais pra evitar, e o design system quebra esses padrÃµes de propÃ³sito.
-
-**Output:** CSS tokens + component styles prontos pra colar no HTML.
-
----
-
-### Phase 3 â€” Page Build (2 skills)
-
-**Objetivo:** Gerar HTML funcional e validar contra o spec.
-
-**Como funciona:**
-
-O `lp-page-builder` Ã© o skill mais pesado do pipeline (315L de SKILL.md + 5 reference files com ~2000L de cÃ³digo copy-paste). Gera um arquivo HTML ÃšNICO, self-contained: todo CSS inline, todo JS inline, zero dependÃªncias externas exceto Google Fonts. Vanilla JS only (~5KB total). O builder nÃ£o interpreta, nÃ£o improvisa, nÃ£o "melhora" â€” copia o copy verbatim do spec, implementa os wireframes exatamente como especificados, e aplica o design system via variÃ¡veis CSS.
-
-Os reference files contÃªm padrÃµes prontos pra cada tipo de seÃ§Ã£o (hero split, hero centered, problem narrative, problem cards, proof metrics+cases, features grid, offer card, FAQ accordion, testimonials, comparison table, final CTA), navegaÃ§Ã£o completa (desktop sticky transparentâ†’sÃ³lido + mobile hamburger com overlay + scroll lock + Escape close), 5 padrÃµes de form submission (WhatsApp redirect, API webhook, Calendly embed, mailto, Google Forms), e todas as animaÃ§Ãµes (IntersectionObserver scroll reveal, number counters com easing, FAQ accordion nativo + enhanced).
-
-O `lp-page-qa` roda ~65 checks em 7 categorias: content accuracy, structural compliance, responsive, design system compliance, performance, accessibility, e interactions. Cada check Ã© binÃ¡rio (pass/fail) com 3 nÃ­veis de severidade (ðŸ”´ critical, ðŸŸ¡ warning, ðŸŸ¢ low) e instruÃ§Ãµes de fix ESPECÃFICAS â€” nÃ£o "responsivo quebrado" mas "Hero CTA abaixo do fold em 375px â†’ reduzir padding-top do hero de var(--space-32) para var(--space-20) no breakpoint mobile".
-
-**Output:** HTML production-ready + QA Report. Loop de fix atÃ© QA passar limpo.
-
----
-
-### Phase 4 â€” Expert Panel (skill set separado)
-
-**Objetivo:** Review multi-perspectiva por especialistas simulados.
-
-Painel de especialistas (CRO, copywriter, UX, brand) avalia a pÃ¡gina construÃ­da contra o Master Brief original. Cada especialista tem lente diferente e gera feedback priorizado.
-
-**Output:** Expert Review Document com recomendaÃ§Ãµes categorizadas.
+Cada skill segue o padrão:
+```
+skill-name/
+├── SKILL.md          ← instruções do agente
+└── references/       ← templates, checklists, frameworks
+    └── *.md
+```
 
 ---
 
-### Phase 5 â€” Rebuild (1 skill)
+## As 8 Fases
 
-**Objetivo:** Aplicar o feedback do Expert Panel de forma cirÃºrgica, sem quebrar o que funciona.
+### Fase 1 — Pesquisa de ICP
 
-**Como funciona:**
+**Skill:** `lp-icp-discovery` · **~10 min** · Interativa
 
-O `lp-page-rebuild` nÃ£o Ã© "refaz a pÃ¡gina". Ã‰ um sistema de triage + execuÃ§Ã£o controlada:
+Processa informações brutas do negócio e gera 3-5 perfis detalhados de cliente ideal (persona archetypes). Define quem a landing page precisa convencer.
 
-1. Categoriza TODO o feedback em 4 buckets: direct edits (aplica), structural changes (aplica com cuidado), conflicts (resolve antes), out of scope (loga e nÃ£o aplica).
+**Output:** ICP Persona Profiles
 
-2. Resolve conflitos entre experts com framework de prioridade: dados > spec > conversÃ£o > simplicidade > reversibilidade.
+---
 
-3. Cria Change Plan ANTES de tocar em cÃ³digo â€” sequencia por prioridade e dependÃªncia.
+### Fase 2 — Empresa e Produto (4 skills)
 
-4. Aplica uma mudanÃ§a por vez, verificando cascade (responsive, anchors, heading hierarchy) apÃ³s cada edit.
+**Skills:** `lp-brand-strategist` → `lp-product-architect` → `lp-competitive-intel` → `lp-brief-synthesizer` · **~20 min** · Interativa + Automática
 
-5. Gera Change Log documentando cada mudanÃ§a com before/after, qual expert pediu, e por quÃª.
+O `lp-brand-strategist` conduz uma entrevista de ~15 minutos em 5 blocos: identidade, história do fundador, diferenciação, voz da marca e prova social. Tem "pressure questions" para respostas vagas.
 
-6. Entrega pro `lp-page-qa` re-run (o skill jÃ¡ existe na Phase 3 â€” reutilizado).
+O `lp-product-architect` mapeia o produto/serviço, classifica o tipo de LP (7 tipos), e arquiteta a oferta: garantia, urgência real, price anchoring, mapa de objeções, e transformação BEFORE→AFTER→PROOF→MECHANISM.
 
-**Output:** HTML v2 + Change Log. Quando QA re-run passa â†’ pÃ¡gina FINAL.
+O `lp-competitive-intel` é 100% automatizado — scrapa concorrentes, analisa padrões de copy/visual/oferta, e gera "attack angles" para diferenciação.
+
+O `lp-brief-synthesizer` cruza os 3 documentos e sintetiza o Master Brief com positioning statement, messaging hierarchy, headlines candidatas, e GAP audit (🔴/🟡/🟢).
+
+**Output:** Master Brief — documento estratégico que alimenta todas as fases seguintes.
+
+---
+
+### Fase 3 — Estratégia, Copy, CTA, Hooks (3 skills)
+
+**Skills:** `lp-copywriter` ∥ `lp-page-architect` → `lp-page-spec-assembler` · **~15 min** · Automática
+
+O `lp-copywriter` e o `lp-page-architect` trabalham em **paralelo**:
+
+- **Copywriter**: escreve TODO o texto seção por seção com 7 frameworks psicológicos (PAS, BAB, Proof Stack, Risk Reversal...), gera 3 variantes A/B de headline e CTA, escreve microcopy completa.
+- **Page Architect**: define estrutura via scroll psychology, wireframes ASCII, CTA map, specs de animação, e comportamento mobile completo por breakpoint.
+
+O `lp-page-spec-assembler` cruza copy e estrutura, resolve mismatches, e gera o **Page Specification** (~400-800 linhas) — documento executável sem decisões pendentes.
+
+**Output:** Page Specification
+
+---
+
+### Fase 4 — Design System
+
+**Skill:** `lp-design-system` · **~5 min** · Automática
+
+Transforma direção visual abstrata em CSS concreto: paleta de cores com contraste validado, tipografia com pares de fontes selecionados, design tokens, component styles, e animation patterns. Cada cliente recebe um design system ÚNICO — a análise competitiva identificou padrões visuais para evitar.
+
+**Output:** CSS tokens + component styles + animation patterns
+
+---
+
+### Fase 5 — Desenvolvimento Estrutural
+
+**Skill:** `lp-page-builder` · **~10 min** · Automática
+
+Gera um arquivo HTML ÚNICO, self-contained: todo CSS inline, todo JS inline (~5KB), zero dependências externas exceto Google Fonts. Implementa usando padrões prontos para 11 tipos de seção, navegação completa (desktop sticky + mobile hamburger), 5 padrões de form submission, e animações via IntersectionObserver.
+
+**Output:** HTML v1 — production-ready, responsivo, acessível
+
+---
+
+### Fase 6 — Análise Crítica (2 skills)
+
+**Skills:** `lp-page-qa` → `lp-expert-panel` · **~10 min** · Automática
+
+O `lp-page-qa` roda ~65 checks em 7 categorias (content, structure, responsive, design system, performance, accessibility, interactions). Cada check é binário com 3 níveis de severidade e instruções de fix específicas.
+
+O `lp-expert-panel` roda 5 especialistas simulados (CRO, Copy, Creative Direction, Frontend, Growth) que geram feedback priorizado, consolidado em um Improvement Plan (P1/P2/P3).
+
+**Output:** QA Report + Expert Review + Improvement Plan
+
+---
+
+### Fase 7 — Revisão Final
+
+**Skill:** `lp-page-rebuild` + `lp-page-qa` (re-run) · **~10 min** · Automática
+
+O `lp-page-rebuild` faz triage do feedback (direct edits, structural changes, conflicts, out of scope), cria Change Plan antes de editar, aplica uma mudança por vez verificando cascade, e gera Change Log. O `lp-page-qa` roda novamente — deve passar limpo.
+
+**Output:** HTML v2 (final) + Change Log + QA Report v2
+
+---
+
+### Fase 8 — Deploy
+
+**Skill:** `lp-deployment` · **~5 min** · Interativa
+
+Guides step-by-step para publicar em Vercel, Cloudflare Pages, ou Firebase Hosting.
+
+**Output:** Landing page publicada e acessível
 
 ---
 
@@ -122,52 +168,50 @@ O `lp-page-rebuild` nÃ£o Ã© "refaz a pÃ¡gina". Ã‰ um sistema de triage 
 
 Uma landing page que:
 
-- Tem posicionamento estratÃ©gico diferenciado (nÃ£o genÃ©rico)
-- Usa as palavras do CLIENTE, nÃ£o jargÃ£o de marketing
-- Tem copy escrito contra frameworks de conversÃ£o testados
+- Tem posicionamento estratégico diferenciado (não genérico)
+- Usa as palavras do CLIENTE, não jargão de marketing
+- Tem copy escrito contra frameworks de conversão testados
 - Tem estrutura baseada em psicologia de scroll real
-- Ã‰ responsiva de verdade (nÃ£o "encolhida", redesenhada pra mobile)
+- É responsiva de verdade (não "encolhida", redesenhada pra mobile)
 - Atinge targets de performance (FCP <1.5s, LCP <2.5s, <1MB)
-- Ã‰ acessÃ­vel (WCAG AA, semÃ¢ntica, keyboard nav, reduced motion)
+- É acessível (WCAG AA, semântica, keyboard nav, reduced motion)
 - Passou por ~65 checks de QA automatizado
-- Passou por revisÃ£o de painel de especialistas
-- Teve feedback aplicado com tracking de mudanÃ§as
+- Passou por revisão de painel de 5 especialistas
+- Teve feedback aplicado com tracking de mudanças
 
-Tudo isso em ~75 minutos, rodando inteiramente dentro do Claude.
+Tudo isso em ~75 minutos.
 
 ---
 
-## Os NÃºmeros
+## Os Números
 
-| MÃ©trica | Valor |
+| Métrica | Valor |
 |---------|-------|
-| Skills totais | 10 |
-| Arquivos totais | 36 |
-| Tamanho total | 405KB |
-| Tempo estimado (full run) | ~75 min |
-| Checks de QA | ~65 por execuÃ§Ã£o |
+| Skills totais | 15 (14 + 1 master) |
+| Arquivos .md totais | 59 |
+| Fases do pipeline | 8 |
+| Checks de QA | ~65 por execução |
 | Frameworks de copy | 7 |
-| PadrÃµes de seÃ§Ã£o | 11 |
-| PadrÃµes de form | 5 |
-| Fases do pipeline | 6 (0, 1, 2, 3, 4, 5) |
+| Padrões de seção | 11 |
+| Padrões de form | 5 |
+| Experts no painel | 5 |
+| Tempo estimado (full run) | ~75 min |
 
 ---
-
-## InstalaÃ§Ã£o
-
-```bash
-# Pipeline completo (exceto Phases 2 e 4 que sÃ£o skill sets separados)
-unzip lp-pipeline-FINAL.zip -d ~/.claude/skills/
-```
 
 ## Uso
 
 ```
 "Crie uma landing page para [cliente]"
-â†’ Phase 0 roda (intake) â†’ Master Brief
-â†’ Phase 1 roda (strategy) â†’ Page Specification
-â†’ Phase 2 roda (design) â†’ CSS System
-â†’ Phase 3 roda (build + QA) â†’ HTML limpo
-â†’ Phase 4 roda (review) â†’ Expert feedback
-â†’ Phase 5 roda (rebuild + QA) â†’ PÃGINA FINAL âœ…
+
+→ Fase 1: Pesquisa de ICP          → Persona Profiles
+→ Fase 2: Empresa e Produto        → Master Brief
+→ Fase 3: Estratégia, Copy, Hooks  → Page Specification
+→ Fase 4: Design System            → CSS Tokens + Styles
+→ Fase 5: Desenvolvimento          → HTML v1
+→ Fase 6: Análise Crítica          → QA Report + Expert Review
+→ Fase 7: Revisão Final            → HTML v2 (final) ✅
+→ Fase 8: Deploy                   → PÁGINA LIVE 🚀
 ```
+
+O `lp-master/SKILL.md` orquestra todo o fluxo com checkpoints de aprovação entre cada fase.
