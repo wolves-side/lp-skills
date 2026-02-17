@@ -1,17 +1,22 @@
 ---
 name: lp-page-builder
-description: "Build a complete, production-ready landing page as a single HTML file. Activate when the Page Specification (Phase 1) and Design System (Phase 2) are complete, or when user has a spec and design tokens ready for implementation. Generates semantic HTML, responsive CSS, scroll animations, form handling, and all copy verbatim from the spec. Outputs a self-contained HTML file ready for deployment. Part of the Landing Page Pipeline (Phase 3, Step 1 of 2)."
+description: >
+  Build a complete, production-ready landing page as a MULTI-FILE project. Activate when the
+  Page Specification (Phase 1) and Design System (Phase 2) are complete. Generates a modular
+  project with separate HTML, CSS (7 files), and JS (6 modules), all production-ready.
+  Outputs a clean project folder plus an optional single-file bundle for deployment.
+  Part of the Landing Page Pipeline (Phase 3, Step 1 of 2).
 ---
 
-# LP Page Builder
+# LP Page Builder — Multi-File Architecture
 
 ## Purpose
 
-Transform the Page Specification + Design System into a WORKING landing page.
-Not a wireframe. Not a prototype. A **production-ready, deployable HTML file.**
+Transform the Page Specification + Design System into a WORKING landing page
+delivered as a **modular, maintainable project** — not a monolithic HTML file.
 
-Single file. All CSS inline. All JS inline. Zero external dependencies except
-Google Fonts. Drop it on any hosting and it works.
+Every file has a single responsibility. CSS is layered. JS is modular.
+HTML is clean and semantic. Easy to read, easy to adjust, easy to scale.
 
 **Requires**:
 1. Page Specification from `lp-page-spec-assembler` (Phase 1)
@@ -19,25 +24,60 @@ Google Fonts. Drop it on any hosting and it works.
 
 ## Core Philosophy
 
-**The spec is the contract. The builder is the executor.**
+**The spec is the contract. The builder is the executor. The architecture enables iteration.**
 
 Rules:
 - Every piece of copy from the Page Spec goes into the HTML VERBATIM. No rewording.
 - Every structural decision from the wireframes gets implemented. No improvising layouts.
 - Every responsive behavior from the mobile specs gets coded. No "it'll probably work."
 - The Design System's CSS variables are the ONLY source of visual decisions.
+- **Each file has ONE job.** CSS doesn't live in HTML. JS doesn't live in CSS.
 - If something is ambiguous in the spec, flag it — don't guess.
 
-## Process
+## Output: Project Structure
 
-### 1. Read the Inputs
+```
+[company-slug]-lp/
+│
+├── index.html                    ← Clean semantic HTML (no inline styles/scripts)
+│
+├── css/
+│   ├── 01-reset.css              ← Minimal CSS reset
+│   ├── 02-design-system.css      ← All :root variables from Phase 2
+│   ├── 03-base.css               ← Global typography, body, container, section
+│   ├── 04-components.css         ← Buttons, cards, forms, badges, offer-card
+│   ├── 05-sections.css           ← Section-specific layout rules (hero, proof, etc.)
+│   ├── 06-animations.css         ← Keyframes, reveal classes, reduced-motion
+│   └── 07-responsive.css         ← ALL media queries consolidated
+│
+├── js/
+│   ├── nav.js                    ← Sticky nav + hamburger + scroll state
+│   ├── scroll-reveal.js          ← IntersectionObserver scroll animations
+│   ├── counters.js               ← Number counter animations
+│   ├── accordion.js              ← FAQ accordion behavior
+│   ├── form-handler.js           ← Validation + submission (WhatsApp/API/etc.)
+│   └── smooth-scroll.js          ← Anchor link smooth scrolling
+│
+└── assets/
+    └── .gitkeep                  ← Placeholder for images/icons
+```
 
-Read BOTH documents completely before writing any code:
+**Total: 1 HTML + 7 CSS + 6 JS = 14 files, each with a single clear purpose.**
+
+See `references/project-structure.md` for detailed file responsibilities.
+
+## Build Order
+
+Follow this exact sequence. Each step builds on the previous.
+
+### Step 1: Read All Inputs
+
+Read BOTH documents completely before writing ANY code:
 
 **From Page Specification:**
 - Meta → SEO tags (title, description, OG)
 - Meta → External integrations (analytics, WhatsApp, Calendly)
-- Meta → Performance targets (these are acceptance criteria)
+- Meta → Performance targets (acceptance criteria)
 - Meta → Accessibility requirements
 - Each section spec (copy + wireframe + behavior + mobile)
 - Form specification (if applicable)
@@ -49,248 +89,196 @@ Read BOTH documents completely before writing any code:
 - Font declarations and Google Fonts import URL
 - Animation tokens
 
-### 2. Scaffold the HTML
+### Step 2: Create CSS Layer (7 files)
 
-Start with the base structure. See `references/html-scaffold.md` for the
-complete starter template with all required meta tags, font loading strategy,
-and performance optimizations.
+Build CSS files in order. Each file imports nothing — they're loaded via
+`<link>` tags in the HTML in numbered order, creating natural cascade.
+
+| File | Contents | Source |
+|------|----------|--------|
+| `01-reset.css` | Box-sizing, margin reset, img/input normalization | Template (copy from reference) |
+| `02-design-system.css` | `:root` with ALL custom properties from Phase 2 | Phase 2 Design System output |
+| `03-base.css` | body, h1-h3, `.container`, `.section`, `.skip-link` | Template + Design System |
+| `04-components.css` | `.btn`, `.cta-support`, form styles, cards, nav, offer-card | Phase 2 components + references |
+| `05-sections.css` | Hero, problem, solution, proof, features, FAQ, testimonials, footer | Section wireframes from Phase 1 |
+| `06-animations.css` | `.reveal`, `.reveal-stagger`, `@keyframes`, reduced-motion | Template (copy from reference) |
+| `07-responsive.css` | ALL `@media` queries for tablet (1024px) and mobile (640px) | Mobile specs from Phase 1 |
+
+**Critical CSS rule:** `05-sections.css` is the ONLY file that should vary
+significantly between projects. Files 01-04 and 06 are mostly template-based.
+
+See `references/css-architecture.md` for complete file templates.
+
+### Step 3: Create HTML (index.html)
+
+Clean, semantic HTML. Zero inline styles. Zero inline scripts.
+All CSS loaded via `<link>`, all JS loaded via `<script defer>`.
 
 **Document structure:**
-```
+```html
 <!DOCTYPE html>
 <html lang="[from spec]">
 <head>
-  <!-- Meta, SEO, OG tags from Page Spec -->
-  <!-- Preconnect to Google Fonts -->
-  <!-- Font loading with display=swap -->
-  <!-- Critical CSS (design system + above-fold styles) -->
+  <!-- Meta, SEO, OG tags -->
+  <!-- Preconnect: fonts -->
+  <!-- Google Fonts -->
+  <!-- CSS files in order -->
+  <link rel="stylesheet" href="css/01-reset.css">
+  <link rel="stylesheet" href="css/02-design-system.css">
+  <link rel="stylesheet" href="css/03-base.css">
+  <link rel="stylesheet" href="css/04-components.css">
+  <link rel="stylesheet" href="css/05-sections.css">
+  <link rel="stylesheet" href="css/06-animations.css">
+  <link rel="stylesheet" href="css/07-responsive.css">
 </head>
 <body>
-  <header> <!-- Sticky navigation --> </header>
-  <main>
-    <section id="hero"> ... </section>
-    <section id="[name]"> ... </section>
-    <!-- All sections from Page Spec in order -->
+  <a href="#main" class="skip-link">Pular para o conteúdo</a>
+  <header class="nav" id="nav">...</header>
+  <main id="main">
+    <section id="hero">...</section>
+    <!-- All sections from Page Spec -->
   </main>
-  <footer> ... </footer>
-  <!-- Non-critical JS: animations, form handling, interactions -->
+  <footer>...</footer>
+
+  <!-- JS modules: defer loading, correct order -->
+  <script defer src="js/nav.js"></script>
+  <script defer src="js/scroll-reveal.js"></script>
+  <script defer src="js/counters.js"></script>
+  <script defer src="js/accordion.js"></script>
+  <script defer src="js/form-handler.js"></script>
+  <script defer src="js/smooth-scroll.js"></script>
+  <!-- Analytics -->
 </body>
 </html>
 ```
 
-### 3. Build Section by Section
+See `references/html-scaffold.md` for the complete starter template.
 
-For EACH section in the Page Specification, implement in order:
+### Step 4: Build Sections (inside index.html + 05-sections.css)
 
-**Step A: Semantic HTML structure**
-- Use correct semantic elements (section, article, aside, figure, nav)
-- H1 for hero ONLY. H2 for all section headers. H3 for sub-items.
-- Add `id` attributes for anchor navigation
-- Add ARIA labels where specified
+For EACH section in the Page Specification, implement:
 
-**Step B: Apply copy verbatim**
-- Copy EVERY text element from the Page Spec exactly
-- Headlines, body paragraphs, CTA text, microcopy — ALL of it
-- Do NOT rephrase, shorten, or "improve" any copy
-- Use the RECOMMENDED variant (not alternatives) unless told otherwise
+**A. HTML structure** (in `index.html`)
+- Semantic elements: `<section>`, `<article>`, `<figure>`, `<nav>`
+- H1 for hero ONLY. H2 for section headers. H3 for sub-items.
+- `id` attributes for anchor navigation
+- `class` attributes referencing 04-components.css and 05-sections.css
+- ARIA labels where specified
+- Copy VERBATIM from the Page Spec — no rewording
 
-**Step C: Implement layout from wireframe**
-- Match the ASCII wireframe structure using CSS Grid or Flexbox
-- Follow the layout pattern specified (Split, Centered, Grid, Cards, etc.)
-- Apply the background tone (map to design system dark/light/accent variables)
+**B. Section layout CSS** (in `05-sections.css`)
+- Match the ASCII wireframe using CSS Grid or Flexbox
+- Follow layout pattern: Split, Centered, Grid, Cards, etc.
+- Use design system variables for all values
+- NO media queries here — they go in `07-responsive.css`
 
-**Step D: Code responsive behavior**
-- Implement EVERY mobile adaptation from the section spec
-- Follow breakpoints from the design system
-- Test mental model: "On a 375px screen, does this section work?"
+**C. Responsive rules** (in `07-responsive.css`)
+- Implement EVERY mobile adaptation from section spec
+- Follow breakpoints from design system
+- Group by breakpoint, then by section within each breakpoint
 
-**Step E: Add interactions**
-- Implement animations from the behavior spec
-- Use IntersectionObserver for scroll-triggered animations
-- Use CSS transitions for hover/focus states
-- Respect `prefers-reduced-motion`
+**D. Animation classes** (in `index.html` markup)
+- Add `.reveal` or `.reveal-stagger` classes as specified
+- Add `data-target` attributes for number counters
+- JS files handle the behavior automatically
 
-See `references/section-build-patterns.md` for implementation patterns
-for each standard section type.
+See `references/section-build-patterns.md` for patterns per section type.
 
-### 4. Implement Navigation
+### Step 5: Implement Navigation
 
-The nav is critical and has complex behavior:
+Navigation touches multiple files:
 
-```
-DESKTOP:
-- Fixed position, full width
-- Transparent background over hero
-- Solid background (with subtle shadow) after scrolling past hero
-- Logo left, links center-right, CTA button far right
-- Links scroll smoothly to section anchors
-- Active link highlights based on scroll position (optional)
+| Concern | File |
+|---------|------|
+| HTML structure | `index.html` (header) |
+| Desktop + base styles | `04-components.css` (.nav-*) |
+| Mobile nav styles | `07-responsive.css` |
+| Scroll behavior + hamburger | `js/nav.js` |
 
-MOBILE:
-- Fixed position, full width
-- Logo left, CTA button center-right, hamburger far right
-- CTA stays visible even when menu is closed (CRITICAL)
-- Hamburger opens full-screen overlay or slide-in panel
-- Menu contains all nav links + contact info
-- Body scroll locked when menu is open
-```
+See `references/nav-implementation.md` for complete cross-file patterns.
 
-See `references/nav-implementation.md` for complete JS + CSS.
+### Step 6: Implement Forms (if applicable)
 
-### 5. Implement Forms (if applicable)
+| Concern | File |
+|---------|------|
+| HTML structure | `index.html` (form) |
+| Form field + error styles | `04-components.css` (.form-*) |
+| Mobile form styles | `07-responsive.css` |
+| Validation + submission | `js/form-handler.js` |
 
-From the Form Specification in the Page Spec:
+See `references/form-implementation.md` for patterns by submission type.
 
-- Build form with correct field types, labels, placeholders
-- Client-side validation (required fields, email format, phone format)
-- Show inline error messages (from the Page Spec microcopy)
-- Loading state on submit (button text changes or spinner)
-- Success state (redirect, message, or WhatsApp open)
-- Accessible: labels linked to inputs, error messages linked with aria-describedby
+### Step 7: Implement JS Modules (6 files)
 
-See `references/form-implementation.md` for complete form patterns.
+Each JS file is an IIFE (Immediately Invoked Function Expression).
+No dependencies between modules. Each is self-contained.
 
-### 6. Implement Scroll Animations
+| Module | Responsibility | Key APIs |
+|--------|---------------|----------|
+| `nav.js` | Sticky state, hamburger, body scroll lock, Escape key | scroll event, classList |
+| `scroll-reveal.js` | Fade-in on scroll, stagger children | IntersectionObserver |
+| `counters.js` | Animate numbers from 0 to target | IntersectionObserver, rAF |
+| `accordion.js` | FAQ open/close, optional single-open mode | details/summary toggle |
+| `form-handler.js` | Validation, error display, submit action | FormData, fetch |
+| `smooth-scroll.js` | Anchor links with nav offset compensation | scrollTo, preventDefault |
 
-Standard animation set (from Page Spec micro-interactions):
+**Performance rules for ALL JS:**
+- Vanilla JS only. Zero dependencies. Zero libraries.
+- Each file wrapped in `(function() { ... })();`
+- All check `prefers-reduced-motion` where applicable
+- Scroll listeners throttled with `requestAnimationFrame`
+- ONLY animate `transform` and `opacity`
 
-| Animation | Implementation |
-|-----------|---------------|
-| Scroll reveal (fade up) | IntersectionObserver + CSS transform |
-| Number counter | IntersectionObserver + JS requestAnimationFrame |
-| Nav background change | Scroll event listener (throttled) |
-| FAQ accordion | CSS max-height transition + JS toggle |
-| CTA hover | CSS :hover transition |
-| Stagger children | CSS animation-delay increments |
+See `references/js-modules.md` for complete module templates.
 
-**Performance rules:**
-- ONLY animate `transform` and `opacity` (GPU-composited)
-- Use `will-change` sparingly (only on elements about to animate)
-- Throttle scroll listeners to 1 tick per rAF
-- Wrap ALL animations in `prefers-reduced-motion` check
-
-See `references/animation-implementation.md` for copy-paste JS patterns.
-
-### 7. Optimize for Performance
-
-Before finalizing, apply these optimizations:
-
-| Optimization | How |
-|-------------|-----|
-| Critical CSS | Inline ALL CSS in `<style>` (single-file approach handles this) |
-| Font loading | `font-display: swap` + preconnect to fonts.googleapis.com |
-| Image lazy loading | `loading="lazy"` on all images below the fold |
-| Image sizing | Explicit `width` and `height` on all `<img>` to prevent CLS |
-| Minimal JS | No libraries. Vanilla JS only. Keep under 5KB total. |
-| Minification | Not needed for the delivered file — builder can do in deployment |
-
-### 8. Add Analytics & Integrations
+### Step 8: Add Analytics & Integrations
 
 From the External Integrations table in the Page Spec:
 
-- Google Analytics / GTM → Script tag before `</body>`
-- Facebook Pixel → Script tag in `<head>` (required for page view tracking)
-- WhatsApp CTA → `href="https://wa.me/[number]?text=[encoded message]"`
-- Calendly → Inline embed or popup link
-- Other tracking → As specified
+- Google Analytics / GTM → `<script>` before `</body>` (after JS modules)
+- Facebook Pixel → `<script>` in `<head>`
+- WhatsApp CTA → configured in `js/form-handler.js`
+- Calendly → inline embed or popup (link in HTML, script before `</body>`)
 
-### 9. Final Assembly
+### Step 9: Self-Review Before Handoff
 
-The complete single-file HTML should follow this internal order:
+Run through ALL checks BEFORE delivering:
 
-```html
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <!-- 1. Charset + viewport -->
-  <!-- 2. SEO meta tags -->
-  <!-- 3. OG tags -->
-  <!-- 4. Preconnect: fonts -->
-  <!-- 5. Google Fonts link -->
-  <!-- 6. Tracking scripts (that must be in head) -->
-  <style>
-    /* 7. CSS Reset (minimal) */
-    /* 8. Design System custom properties */
-    /* 9. Base/global styles */
-    /* 10. Component styles */
-    /* 11. Section-specific styles */
-    /* 12. Responsive overrides */
-    /* 13. Animation keyframes */
-    /* 14. Utility classes */
-    /* 15. Print styles (optional) */
-  </style>
-</head>
-<body>
-  <!-- 16. Navigation (header) -->
-  <main>
-    <!-- 17-N. All sections in order -->
-  </main>
-  <!-- N+1. Footer -->
-  <script>
-    // N+2. Navigation behavior (scroll, mobile menu)
-    // N+3. Scroll animations (IntersectionObserver)
-    // N+4. Number counters
-    // N+5. FAQ accordion
-    // N+6. Form handling (if applicable)
-    // N+7. Smooth scroll for anchor links
-  </script>
-  <!-- N+8. Analytics/tracking scripts -->
-</body>
-</html>
-```
+**Content:** Every headline, paragraph, CTA, microcopy verbatim from spec.
+No placeholders. No typos.
 
-### 10. Self-Review Before Handoff
+**Structure:** All sections present and in order. All CTAs implemented.
+Nav links correct. Form fields match spec.
 
-Run through these checks BEFORE delivering:
+**CSS Architecture:** No inline styles in HTML. No hardcoded values outside
+`02-design-system.css`. Variables used everywhere. No CSS in JS files.
 
-**Content check:**
-- [ ] Every headline from the Page Spec is present and verbatim
-- [ ] Every body paragraph is present and verbatim
-- [ ] Every CTA has correct text AND microcopy
-- [ ] FAQ has all questions and answers
-- [ ] Footer has all specified elements
-- [ ] No placeholder text remains ("Lorem ipsum", "[TODO]", etc.)
+**JS Architecture:** No inline scripts in HTML. Each module is self-contained.
+No global variable leaks. All IIFEs.
 
-**Structure check:**
-- [ ] Sections are in the correct order from the Page Spec
-- [ ] Layouts match the wireframes
-- [ ] CTA map is fully implemented (hero, mid-page, offer, closing + sticky)
-- [ ] Navigation links point to correct section anchors
+**Responsive:** Hero CTA above fold on 375px. No horizontal scroll.
+Touch targets ≥ 44px. All mobile adaptations from spec implemented.
 
-**Visual check:**
-- [ ] Design system variables are used consistently (no hardcoded colors/sizes)
-- [ ] Dark/light section rhythm matches the spec
-- [ ] Visual weight hierarchy feels correct (hero > offer > proof)
-- [ ] Component styles match the design system
+**Performance:** `defer` on all scripts. `loading="lazy"` below fold.
+`display=swap` on fonts. Preconnect hints present.
 
-**Responsive check:**
-- [ ] Hero CTA is above the fold on 375px mobile
-- [ ] No horizontal scroll at any breakpoint
-- [ ] Touch targets are ≥44x44px
-- [ ] Tables convert to cards/stacks on mobile
-- [ ] Navigation hamburger works, CTA stays visible
+**Accessibility:** Skip link, lang attribute, semantic elements, ARIA states,
+`prefers-reduced-motion`, form labels linked, focus styles visible.
 
-**Performance check:**
-- [ ] No external CSS files (all inline)
-- [ ] No JS libraries (vanilla only)
-- [ ] Images have lazy loading below fold
-- [ ] Images have explicit width/height
-- [ ] Fonts use display=swap
+### Step 10: Optional — Single-File Bundle
 
-**Accessibility check:**
-- [ ] Semantic HTML elements used correctly
-- [ ] Single H1 (hero), H2s for sections, H3s for sub-items
-- [ ] All images have meaningful alt text
-- [ ] Form fields have linked labels
-- [ ] Focus styles visible on all interactive elements
-- [ ] Skip-to-content link present
-- [ ] prefers-reduced-motion disables animations
+If the client needs a single deployable HTML file (for quick hosting, email,
+or platforms that require it), generate a bundled version:
 
-## Output
+See `references/build-assembly.md` for the bundling process.
 
-A single `.html` file ready for deployment.
+## Delivery
 
-Filename: `[company-slug]-landing-page.html`
+The builder delivers:
+
+1. **Project folder** with all 14 files (primary deliverable)
+2. **Bundled HTML** (optional, if requested) — single file with everything inlined
+3. **Build notes** — any ambiguities found in the spec, decisions made
 
 ## Integration
 
@@ -302,8 +290,12 @@ Filename: `[company-slug]-landing-page.html`
 
 ## References
 
-- `references/html-scaffold.md` — Base HTML template with meta, fonts, performance setup
-- `references/section-build-patterns.md` — HTML/CSS patterns for each section type
-- `references/nav-implementation.md` — Complete navigation JS + CSS
-- `references/form-implementation.md` — Form validation and submission patterns
-- `references/animation-implementation.md` — Scroll animations, counters, accordions
+- `references/project-structure.md` — File responsibilities and naming conventions
+- `references/html-scaffold.md` — Complete HTML template with all meta, links, scripts
+- `references/css-architecture.md` — All 7 CSS files with complete templates
+- `references/js-modules.md` — All 6 JS modules with complete templates
+- `references/section-build-patterns.md` — HTML + CSS per section type (multi-file)
+- `references/nav-implementation.md` — Navigation across HTML/CSS/JS files
+- `references/form-implementation.md` — Form patterns by submission type
+- `references/animation-implementation.md` — Animation CSS + JS patterns
+- `references/build-assembly.md` — How to bundle into single-file for deployment
