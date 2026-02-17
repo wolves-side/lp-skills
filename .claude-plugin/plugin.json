@@ -1,0 +1,10 @@
+{
+  "name": "lp-skills",
+  "description": "AI Landing Page Design Pipeline: 15 skills que transformam uma conversa com cliente em landing page completa",
+  "version": "1.0.0",
+  "author": {
+    "name": "PK Tech"
+  },
+  "license": "MIT",
+  "keywords": ["landing-page", "copywriting", "design-system", "conversion", "pipeline"]
+}

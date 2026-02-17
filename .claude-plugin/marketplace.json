@@ -1,0 +1,11 @@
+{
+  "name": "lp-skills",
+  "description": "AI Landing Page Design Pipeline",
+  "owner": { "name": "PK Tech" },
+  "plugins": [{
+    "name": "lp-skills",
+    "description": "AI Landing Page Design Pipeline: 15 skills para criação completa de landing pages",
+    "version": "1.0.0",
+    "source": "./"
+  }]
+}

@@ -23,40 +23,33 @@ A diferença fundamental: cada agente do pipeline tem acesso ao contexto COMPLET
 ## Estrutura do Repositório
 
 ```
-lp-skill/
-├── README.md
-├── lp-master/                               ← 🎯 Skill orquestradora
-│   └── SKILL.md
-│
-├── fase-1-pesquisa-icp/
-│   └── lp-icp-discovery/                    ← Pesquisa de cliente ideal
-│
-├── fase-2-empresa-produto/
+lp-skills/
+├── .claude-plugin/
+│   ├── plugin.json                          ← Metadados do plugin
+│   └── marketplace.json                     ← Registro do marketplace
+├── hooks/
+│   ├── hooks.json                           ← Hooks de sessão
+│   └── session-start.sh                     ← Injeta contexto do pipeline
+├── commands/
+│   └── create-lp.md                         ← Atalho /create-lp
+├── skills/
+│   ├── lp-master/                           ← 🎯 Skill orquestradora
+│   ├── lp-icp-discovery/                    ← Pesquisa de cliente ideal
 │   ├── lp-brand-strategist/                 ← Entrevista de marca
 │   ├── lp-product-architect/                ← Mapeamento de produto/oferta
 │   ├── lp-competitive-intel/                ← Análise de concorrência
-│   └── lp-brief-synthesizer/                ← Síntese → Master Brief
-│
-├── fase-3-estrategia-copy/
+│   ├── lp-brief-synthesizer/                ← Síntese → Master Brief
 │   ├── lp-copywriter/                       ← Copy completo da página
 │   ├── lp-page-architect/                   ← Estrutura e wireframes
-│   └── lp-page-spec-assembler/              ← Merge → Page Specification
-│
-├── fase-4-design-system/
-│   └── lp-design-system/                    ← Tokens CSS, componentes, animações
-│
-├── fase-5-desenvolvimento/
-│   └── lp-page-builder/                     ← HTML self-contained
-│
-├── fase-6-analise-critica/
+│   ├── lp-page-spec-assembler/              ← Merge → Page Specification
+│   ├── lp-design-system/                    ← Tokens CSS, componentes, animações
+│   ├── lp-page-builder/                     ← HTML self-contained
 │   ├── lp-page-qa/                          ← ~65 checks automatizados
-│   └── lp-expert-panel/                     ← Painel de 5 especialistas
-│
-├── fase-7-revisao-final/
-│   └── lp-page-rebuild/                     ← Aplicação cirúrgica de feedback
-│
-└── fase-8-deploy/
-    └── lp-deployment/                       ← Vercel, Cloudflare, Firebase
+│   ├── lp-expert-panel/                     ← Painel de 5 especialistas
+│   ├── lp-page-rebuild/                     ← Aplicação cirúrgica de feedback
+│   └── lp-deployment/                       ← Vercel, Cloudflare, Firebase
+├── README.md
+└── .gitignore
 ```
 
 Cada skill segue o padrão:
