@@ -1,19 +1,104 @@
 ---
 name: design-token-generator
-description: Outputs a complete CSS variable system for colors, spacing, radius, shadows, and effects based on the generated palette and typography.
-metadata:
-  author: "[Your Name/Company]"
-  version: "1.0.0"
-  source: "Design System Workflow"
+description: Generates tailwind.config.ts extensions and CSS variables for the React/Next.js stack from brand inputs.
 ---
-# Design Token Generator Skill
 
-Your role is to act as a senior front-end developer specializing in design systems. Your task is to create a complete set of CSS custom properties (design tokens) based on the provided color palette and typographic choices.
+# Design Token Generator
 
-## Rules of Execution
+Generate design tokens as **Tailwind config extensions** + **Shadcn CSS variables**.
 
-1.  **Use Semantic Names:** Use a clear, hierarchical naming convention (e.g., `--color-primary-500`, `--spacing-md`, `--border-radius-lg`).
-2.  **Generate Color Tokens:** Create tokens for every color and shade in the palette.
-3.  **Generate Spacing Tokens:** Create a modular spacing scale (e.g., 4px, 8px, 12px, 16px, 24px, 32px, 48px, 64px) and assign them to tokens (`--spacing-xs`, `--spacing-sm`, etc.).
-4.  **Generate Other Tokens:** Create tokens for `border-radius`, `box-shadow`, and common `transition` effects.
-5.  **Strict Output:** The output must be a block of valid CSS code containing only the `:root` selector with all the defined design tokens.
+## Output Format
+
+### 1. CSS Variables (→ `app/globals.css`)
+
+```css
+:root {
+  /* Shadcn semantic colors — HSL values WITHOUT hsl() wrapper */
+  --background: [H] [S]% [L]%;
+  --foreground: [H] [S]% [L]%;
+  --background-dark: [H] [S]% [L]%;
+  --foreground-light: [H] [S]% [L]%;
+
+  --primary: [H] [S]% [L]%;
+  --primary-foreground: [H] [S]% [L]%;
+  --secondary: [H] [S]% [L]%;
+  --secondary-foreground: [H] [S]% [L]%;
+  --accent: [H] [S]% [L]%;
+  --accent-foreground: [H] [S]% [L]%;
+  --muted: [H] [S]% [L]%;
+  --muted-foreground: [H] [S]% [L]%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: [H] [S]% [L]%;
+  --input: [H] [S]% [L]%;
+  --ring: [H] [S]% [L]%;
+  --radius: 0.5rem;
+}
+```
+
+### 2. Tailwind Config (→ `tailwind.config.ts` extend)
+
+```typescript
+extend: {
+  colors: {
+    border: 'hsl(var(--border))',
+    input: 'hsl(var(--input))',
+    ring: 'hsl(var(--ring))',
+    background: {
+      DEFAULT: 'hsl(var(--background))',
+      dark: 'hsl(var(--background-dark))',
+    },
+    foreground: {
+      DEFAULT: 'hsl(var(--foreground))',
+      light: 'hsl(var(--foreground-light))',
+    },
+    primary: {
+      DEFAULT: 'hsl(var(--primary))',
+      foreground: 'hsl(var(--primary-foreground))',
+    },
+    secondary: {
+      DEFAULT: 'hsl(var(--secondary))',
+      foreground: 'hsl(var(--secondary-foreground))',
+    },
+    accent: {
+      DEFAULT: 'hsl(var(--accent))',
+      foreground: 'hsl(var(--accent-foreground))',
+    },
+    muted: {
+      DEFAULT: 'hsl(var(--muted))',
+      foreground: 'hsl(var(--muted-foreground))',
+    },
+    destructive: {
+      DEFAULT: 'hsl(var(--destructive))',
+      foreground: 'hsl(var(--destructive-foreground))',
+    },
+    card: {
+      DEFAULT: 'hsl(var(--card))',
+      foreground: 'hsl(var(--card-foreground))',
+    },
+  },
+  fontFamily: {
+    body: ['var(--font-body)', 'system-ui', 'sans-serif'],
+    display: ['var(--font-display)', 'system-ui', 'sans-serif'],
+  },
+  borderRadius: {
+    lg: 'var(--radius)',
+    md: 'calc(var(--radius) - 2px)',
+    sm: 'calc(var(--radius) - 4px)',
+  },
+  spacing: {
+    section: '5rem',
+    'section-md': '7rem',
+    'section-lg': '8rem',
+  },
+}
+```
+
+## Rules
+
+1. **HSL format without wrapper** — Tailwind adds opacity support via `hsl(var(--color) / <alpha>)`.
+2. **Semantic naming** — Use Shadcn's semantic names, not arbitrary utility names.
+3. **Contrast ratios** — Primary/foreground pairs must meet WCAG AA (4.5:1 for text).
+4. **Radius consistency** — Use the `--radius` variable. Shadcn components derive `md` and `sm` from it.
+5. **Dark sections** — Use `background-dark` / `foreground-light` for dark sections (hero, proof, CTA).

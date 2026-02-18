@@ -1,70 +1,138 @@
 ---
 name: lp-page-builder
 description: >
-  Build a complete, production-ready landing page as a MULTI-FILE project. Activate when the
+  Build a complete, production-ready landing page as a React/Next.js project. Activate when the
   Page Specification (Phase 1) and Design System (Phase 2) are complete. Generates a modular
-  project with separate HTML, CSS (7 files), and JS (6 modules), all production-ready.
-  Outputs a clean project folder plus an optional single-file bundle for deployment.
+  Next.js 14 project with TypeScript, Tailwind CSS, Shadcn UI, Framer Motion, GSAP, and Lenis —
+  every page is unique with advanced animations, decorative effects, and premium visual identity.
   Part of the Landing Page Pipeline (Phase 3, Step 1 of 2).
 ---
 
-# LP Page Builder — Multi-File Architecture
+# LP Page Builder — React/Next.js Architecture
 
 ## Purpose
 
 Transform the Page Specification + Design System into a WORKING landing page
-delivered as a **modular, maintainable project** — not a monolithic HTML file.
+delivered as a **modern React project** — componentized, animated, visually unique.
 
-Every file has a single responsibility. CSS is layered. JS is modular.
-HTML is clean and semantic. Easy to read, easy to adjust, easy to scale.
+Every project must feel different. Same stack, different soul.
+The combination of decorative effects, animation patterns, color palettes,
+typography, and layout variations should make each LP unmistakably its own.
 
 **Requires**:
 1. Page Specification from `lp-page-spec-assembler` (Phase 1)
-2. Design System from Phase 2 (CSS custom properties + component styles)
+2. Design System from Phase 2 (Tailwind config + Framer Motion variants + aesthetic classification)
 
 ## Core Philosophy
 
-**The spec is the contract. The builder is the executor. The architecture enables iteration.**
+**The spec is the contract. The builder is the executor. The design system makes it unique.**
 
 Rules:
-- Every piece of copy from the Page Spec goes into the HTML VERBATIM. No rewording.
+- Every piece of copy from the Page Spec goes into the JSX VERBATIM. No rewording.
 - Every structural decision from the wireframes gets implemented. No improvising layouts.
 - Every responsive behavior from the mobile specs gets coded. No "it'll probably work."
-- The Design System's CSS variables are the ONLY source of visual decisions.
-- **Each file has ONE job.** CSS doesn't live in HTML. JS doesn't live in CSS.
+- The Design System's Tailwind config is the ONLY source of visual decisions.
+- **Each component has ONE job.** Sections are isolated. Animations are composable.
+- Decorative effects are selected PER PROJECT based on the aesthetic classification.
 - If something is ambiguous in the spec, flag it — don't guess.
+
+## Tech Stack
+
+### Core (Always Used)
+
+| Package | Purpose | Version |
+|---------|---------|---------|
+| **Next.js 14** | Framework (App Router, SSG) | `^14` |
+| **TypeScript** | Type safety | `^5` |
+| **Tailwind CSS** | Utility-first styling | `^3.4` |
+| **Shadcn UI** | Base components (copy-paste) | latest |
+| **Framer Motion** | Animations, transitions, gestures | `^11` |
+| **GSAP + ScrollTrigger** | Advanced scroll animations, parallax, pin | `^3.12` |
+| **Lenis** | Smooth scrolling | `^1.1` |
+| **Lucide React** | Icon library | `^0.400` |
+| **React Hook Form + Zod** | Form validation | latest |
+| **clsx + tailwind-merge** | Class merging utilities | latest |
+
+### Optional (Per Project)
+
+| Package | When to Use |
+|---------|-------------|
+| **Embla Carousel** | Testimonial carousels, case study sliders, logo bars |
+| **React Three Fiber + Drei** | Premium projects: 3D backgrounds, particles, organic shapes |
+| **Spline React** | When using Spline 3D scenes as hero backgrounds |
+| **@lottiefiles/react** | When using Lottie animations for icons or illustrations |
+
+See `references/project-scaffold.md` for complete `package.json` and setup commands.
 
 ## Output: Project Structure
 
 ```
 [company-slug]-lp/
 │
-├── index.html                    ← Clean semantic HTML (no inline styles/scripts)
+├── app/
+│   ├── layout.tsx              ← Root layout: fonts, metadata, Lenis provider
+│   ├── page.tsx                ← Main page: composes all sections
+│   └── globals.css             ← Tailwind directives + custom utilities
 │
-├── css/
-│   ├── 01-reset.css              ← Minimal CSS reset
-│   ├── 02-design-system.css      ← All :root variables from Phase 2
-│   ├── 03-base.css               ← Global typography, body, container, section
-│   ├── 04-components.css         ← Buttons, cards, forms, badges, offer-card
-│   ├── 05-sections.css           ← Section-specific layout rules (hero, proof, etc.)
-│   ├── 06-animations.css         ← Keyframes, reveal classes, reduced-motion
-│   └── 07-responsive.css         ← ALL media queries consolidated
+├── components/
+│   ├── ui/                     ← Shadcn UI base (button, card, accordion, etc.)
+│   │   ├── button.tsx
+│   │   ├── card.tsx
+│   │   ├── accordion.tsx
+│   │   └── ...
+│   │
+│   ├── sections/               ← One component per page section
+│   │   ├── hero.tsx
+│   │   ├── problem.tsx
+│   │   ├── solution.tsx
+│   │   ├── proof.tsx
+│   │   ├── features.tsx
+│   │   ├── testimonials.tsx
+│   │   ├── offer.tsx
+│   │   ├── faq.tsx
+│   │   ├── contact.tsx
+│   │   ├── cta-final.tsx
+│   │   └── footer.tsx
+│   │
+│   ├── animations/             ← Reusable animation wrappers
+│   │   ├── scroll-reveal.tsx   ← Framer Motion viewport reveal
+│   │   ├── stagger-children.tsx← Staggered entry for lists/grids
+│   │   ├── counter.tsx         ← Animated number counter
+│   │   ├── parallax-section.tsx← GSAP ScrollTrigger parallax
+│   │   ├── text-reveal.tsx     ← Character/word reveal animation
+│   │   └── magnetic-button.tsx ← Magnetic hover effect for CTAs
+│   │
+│   ├── decorative/             ← Visual effects (selected per project)
+│   │   ├── gradient-blob.tsx   ← Animated gradient blobs
+│   │   ├── noise-texture.tsx   ← SVG noise overlay
+│   │   ├── grid-pattern.tsx    ← Dot/line grid background
+│   │   ├── aurora.tsx          ← Aurora borealis gradient effect
+│   │   ├── spotlight.tsx       ← Mouse-following spotlight
+│   │   └── particles.tsx       ← Floating particles (optional R3F)
+│   │
+│   └── navigation/
+│       ├── navbar.tsx          ← Sticky nav with scroll state
+│       └── mobile-menu.tsx     ← Full-screen mobile menu with Framer Motion
 │
-├── js/
-│   ├── nav.js                    ← Sticky nav + hamburger + scroll state
-│   ├── scroll-reveal.js          ← IntersectionObserver scroll animations
-│   ├── counters.js               ← Number counter animations
-│   ├── accordion.js              ← FAQ accordion behavior
-│   ├── form-handler.js           ← Validation + submission (WhatsApp/API/etc.)
-│   └── smooth-scroll.js          ← Anchor link smooth scrolling
+├── lib/
+│   ├── utils.ts                ← cn() helper (clsx + tailwind-merge)
+│   ├── fonts.ts                ← next/font declarations
+│   ├── animations.ts           ← Shared Framer Motion variants
+│   └── lenis-provider.tsx      ← Lenis smooth scroll wrapper
 │
-└── assets/
-    └── .gitkeep                  ← Placeholder for images/icons
+├── public/
+│   └── assets/                 ← Images, SVGs, favicons
+│
+├── tailwind.config.ts          ← Design tokens from Phase 2
+├── next.config.js              ← Static export config
+├── package.json
+├── tsconfig.json
+└── components.json             ← Shadcn UI config
 ```
 
-**Total: 1 HTML + 7 CSS + 6 JS = 14 files, each with a single clear purpose.**
+**Total: Modular component architecture with clear separation of concerns.**
 
-See `references/project-structure.md` for detailed file responsibilities.
+See `references/project-scaffold.md` for detailed file responsibilities and setup.
 
 ## Build Order
 
@@ -84,163 +152,165 @@ Read BOTH documents completely before writing ANY code:
 - A/B variant summary (implement the "Recommended" variant)
 
 **From Design System:**
-- All CSS custom properties (colors, type, spacing, etc.)
-- Component base styles (buttons, cards, nav, etc.)
-- Font declarations and Google Fonts import URL
-- Animation tokens
+- Tailwind config extensions (colors, typography, spacing, etc.)
+- Aesthetic classification (determines decorative effects to use)
+- Framer Motion variants (animation style unique to this project)
+- Component style overrides (Shadcn + custom components)
+- Font declarations and Google Fonts selections
 
-### Step 2: Create CSS Layer (7 files)
+### Step 2: Scaffold the Project
 
-Build CSS files in order. Each file imports nothing — they're loaded via
-`<link>` tags in the HTML in numbered order, creating natural cascade.
+Initialize the Next.js project with the full stack:
 
-| File | Contents | Source |
-|------|----------|--------|
-| `01-reset.css` | Box-sizing, margin reset, img/input normalization | Template (copy from reference) |
-| `02-design-system.css` | `:root` with ALL custom properties from Phase 2 | Phase 2 Design System output |
-| `03-base.css` | body, h1-h3, `.container`, `.section`, `.skip-link` | Template + Design System |
-| `04-components.css` | `.btn`, `.cta-support`, form styles, cards, nav, offer-card | Phase 2 components + references |
-| `05-sections.css` | Hero, problem, solution, proof, features, FAQ, testimonials, footer | Section wireframes from Phase 1 |
-| `06-animations.css` | `.reveal`, `.reveal-stagger`, `@keyframes`, reduced-motion | Template (copy from reference) |
-| `07-responsive.css` | ALL `@media` queries for tablet (1024px) and mobile (640px) | Mobile specs from Phase 1 |
-
-**Critical CSS rule:** `05-sections.css` is the ONLY file that should vary
-significantly between projects. Files 01-04 and 06 are mostly template-based.
-
-See `references/css-architecture.md` for complete file templates.
-
-### Step 3: Create HTML (index.html)
-
-Clean, semantic HTML. Zero inline styles. Zero inline scripts.
-All CSS loaded via `<link>`, all JS loaded via `<script defer>`.
-
-**Document structure:**
-```html
-<!DOCTYPE html>
-<html lang="[from spec]">
-<head>
-  <!-- Meta, SEO, OG tags -->
-  <!-- Preconnect: fonts -->
-  <!-- Google Fonts -->
-  <!-- CSS files in order -->
-  <link rel="stylesheet" href="css/01-reset.css">
-  <link rel="stylesheet" href="css/02-design-system.css">
-  <link rel="stylesheet" href="css/03-base.css">
-  <link rel="stylesheet" href="css/04-components.css">
-  <link rel="stylesheet" href="css/05-sections.css">
-  <link rel="stylesheet" href="css/06-animations.css">
-  <link rel="stylesheet" href="css/07-responsive.css">
-</head>
-<body>
-  <a href="#main" class="skip-link">Pular para o conteúdo</a>
-  <header class="nav" id="nav">...</header>
-  <main id="main">
-    <section id="hero">...</section>
-    <!-- All sections from Page Spec -->
-  </main>
-  <footer>...</footer>
-
-  <!-- JS modules: defer loading, correct order -->
-  <script defer src="js/nav.js"></script>
-  <script defer src="js/scroll-reveal.js"></script>
-  <script defer src="js/counters.js"></script>
-  <script defer src="js/accordion.js"></script>
-  <script defer src="js/form-handler.js"></script>
-  <script defer src="js/smooth-scroll.js"></script>
-  <!-- Analytics -->
-</body>
-</html>
+```bash
+npx -y create-next-app@latest ./ --typescript --tailwind --eslint --app --src-dir=false --import-alias="@/*" --use-npm
+npx -y shadcn@latest init
 ```
 
-See `references/html-scaffold.md` for the complete starter template.
+Install all dependencies:
 
-### Step 4: Build Sections (inside index.html + 05-sections.css)
+```bash
+npm install framer-motion gsap @gsap/react lenis lucide-react react-hook-form @hookform/resolvers zod clsx tailwind-merge embla-carousel-react
+```
 
-For EACH section in the Page Specification, implement:
+See `references/project-scaffold.md` for complete setup including Shadcn components and Lenis provider.
 
-**A. HTML structure** (in `index.html`)
-- Semantic elements: `<section>`, `<article>`, `<figure>`, `<nav>`
+### Step 3: Configure Design System
+
+Apply the Phase 2 Design System output:
+
+1. **`tailwind.config.ts`** — Extend with all design tokens (colors, fonts, spacing, animations)
+2. **`app/globals.css`** — Tailwind directives + custom CSS utilities (noise texture, gradients)
+3. **`lib/fonts.ts`** — `next/font/google` declarations for selected fonts
+4. **`lib/animations.ts`** — Framer Motion variants from the Design System
+5. **`lib/utils.ts`** — `cn()` helper function
+
+See `references/tailwind-config.md` for how to map Design System tokens to Tailwind config.
+
+### Step 4: Build Animation Components
+
+Create the reusable animation wrappers BEFORE building sections:
+
+| Component | Mechanism | Use Case |
+|-----------|-----------|----------|
+| `ScrollReveal` | Framer Motion `whileInView` | Any element entering viewport |
+| `StaggerChildren` | Framer Motion `staggerChildren` | Card grids, feature lists |
+| `Counter` | Framer Motion `useMotionValue` + `animate` | Metric numbers |
+| `ParallaxSection` | GSAP ScrollTrigger | Background parallax, pinned sections |
+| `TextReveal` | Framer Motion per-character/word | Headlines, hero text |
+| `MagneticButton` | Framer Motion `useMotionValue` + mouse position | CTA buttons |
+
+See `references/animation-system.md` for complete component code.
+
+### Step 5: Build Decorative Components
+
+Select decorative effects based on the aesthetic classification from Phase 2:
+
+| Aesthetic | Recommended Effects |
+|-----------|-------------------|
+| **Corporate/Enterprise** | Grid pattern + noise texture + subtle gradient |
+| **Startup/Tech** | Aurora + gradient blobs + spotlight |
+| **Creative/Agency** | Particles + bold gradients + magnetic buttons |
+| **SaaS/Product** | Dot pattern + clean gradients + text reveal |
+| **Premium/Luxury** | Noise texture + spotlight + minimal particles |
+
+**Rule: Pick 2-3 effects maximum.** More than that creates visual noise.
+
+See `references/decorative-effects.md` for component code and usage guidelines.
+
+### Step 6: Build Sections
+
+For EACH section in the Page Specification, create a component in `components/sections/`:
+
+**A. Component props** — Type the section data for flexibility:
+```tsx
+interface HeroProps {
+  title: string;
+  subtitle: string;
+  ctaText: string;
+  ctaHref: string;
+  ctaMicrocopy?: string;
+  trustedBy?: string[];
+}
+```
+
+**B. JSX structure** — Semantic HTML, Tailwind classes, animation wrappers:
+- Use `<section>`, `<article>`, `<figure>`, `<nav>` semantics
 - H1 for hero ONLY. H2 for section headers. H3 for sub-items.
-- `id` attributes for anchor navigation
-- `class` attributes referencing 04-components.css and 05-sections.css
-- ARIA labels where specified
+- Wrap in `ScrollReveal` or `StaggerChildren` as specified
+- Apply decorative components as backgrounds
 - Copy VERBATIM from the Page Spec — no rewording
 
-**B. Section layout CSS** (in `05-sections.css`)
-- Match the ASCII wireframe using CSS Grid or Flexbox
-- Follow layout pattern: Split, Centered, Grid, Cards, etc.
-- Use design system variables for all values
-- NO media queries here — they go in `07-responsive.css`
+**C. Responsive design** — Tailwind responsive modifiers:
+- Mobile-first by default (base = mobile)
+- `md:` for tablet (768px)
+- `lg:` for desktop (1024px)
+- `xl:` for large screens (1280px)
 
-**C. Responsive rules** (in `07-responsive.css`)
-- Implement EVERY mobile adaptation from section spec
-- Follow breakpoints from design system
-- Group by breakpoint, then by section within each breakpoint
+**D. Animations** — Framer Motion props on the component:
+- Entry animations via `ScrollReveal` wrapper
+- Hover effects via `whileHover`
+- Layout animations via `layout` prop
+- GSAP for complex scroll-based sequences
 
-**D. Animation classes** (in `index.html` markup)
-- Add `.reveal` or `.reveal-stagger` classes as specified
-- Add `data-target` attributes for number counters
-- JS files handle the behavior automatically
+See `references/component-patterns.md` for patterns per section type.
 
-See `references/section-build-patterns.md` for patterns per section type.
+### Step 7: Implement Navigation
 
-### Step 5: Implement Navigation
-
-Navigation touches multiple files:
+Navigation uses Framer Motion for smooth mobile menu:
 
 | Concern | File |
 |---------|------|
-| HTML structure | `index.html` (header) |
-| Desktop + base styles | `04-components.css` (.nav-*) |
-| Mobile nav styles | `07-responsive.css` |
-| Scroll behavior + hamburger | `js/nav.js` |
+| Desktop navbar + scroll state | `components/navigation/navbar.tsx` |
+| Mobile full-screen menu | `components/navigation/mobile-menu.tsx` |
+| Smooth scroll to anchors | Via Lenis (automatic) |
 
-See `references/nav-implementation.md` for complete cross-file patterns.
+See `references/nav-implementation.md` for complete React components.
 
-### Step 6: Implement Forms (if applicable)
+### Step 8: Implement Forms (if applicable)
+
+Forms use React Hook Form + Zod for validation:
 
 | Concern | File |
 |---------|------|
-| HTML structure | `index.html` (form) |
-| Form field + error styles | `04-components.css` (.form-*) |
-| Mobile form styles | `07-responsive.css` |
-| Validation + submission | `js/form-handler.js` |
+| Form component + UI | `components/sections/contact.tsx` |
+| Validation schema | Zod schema inline or in `lib/schemas.ts` |
+| Submission handler | Inside component (WhatsApp, API, mailto) |
 
 See `references/form-implementation.md` for patterns by submission type.
 
-### Step 7: Implement JS Modules (6 files)
+### Step 9: Compose the Page
 
-Each JS file is an IIFE (Immediately Invoked Function Expression).
-No dependencies between modules. Each is self-contained.
+In `app/page.tsx`, compose all sections:
 
-| Module | Responsibility | Key APIs |
-|--------|---------------|----------|
-| `nav.js` | Sticky state, hamburger, body scroll lock, Escape key | scroll event, classList |
-| `scroll-reveal.js` | Fade-in on scroll, stagger children | IntersectionObserver |
-| `counters.js` | Animate numbers from 0 to target | IntersectionObserver, rAF |
-| `accordion.js` | FAQ open/close, optional single-open mode | details/summary toggle |
-| `form-handler.js` | Validation, error display, submit action | FormData, fetch |
-| `smooth-scroll.js` | Anchor links with nav offset compensation | scrollTo, preventDefault |
+```tsx
+import { Hero } from '@/components/sections/hero';
+import { Problem } from '@/components/sections/problem';
+import { Solution } from '@/components/sections/solution';
+// ... all sections
 
-**Performance rules for ALL JS:**
-- Vanilla JS only. Zero dependencies. Zero libraries.
-- Each file wrapped in `(function() { ... })();`
-- All check `prefers-reduced-motion` where applicable
-- Scroll listeners throttled with `requestAnimationFrame`
-- ONLY animate `transform` and `opacity`
+export default function Home() {
+  return (
+    <main>
+      <Hero {...heroData} />
+      <Problem {...problemData} />
+      <Solution {...solutionData} />
+      {/* All sections in order from Page Spec */}
+    </main>
+  );
+}
+```
 
-See `references/js-modules.md` for complete module templates.
-
-### Step 8: Add Analytics & Integrations
+### Step 10: Add Analytics & Integrations
 
 From the External Integrations table in the Page Spec:
 
-- Google Analytics / GTM → `<script>` before `</body>` (after JS modules)
-- Facebook Pixel → `<script>` in `<head>`
-- WhatsApp CTA → configured in `js/form-handler.js`
-- Calendly → inline embed or popup (link in HTML, script before `</body>`)
+- Google Analytics / GTM → `app/layout.tsx` via `<Script>` component
+- Facebook Pixel → `app/layout.tsx` via `<Script>`
+- WhatsApp CTA → configured in contact component
+- Calendly → inline embed or popup component
 
-### Step 9: Self-Review Before Handoff
+### Step 11: Self-Review Before Handoff
 
 Run through ALL checks BEFORE delivering:
 
@@ -250,52 +320,74 @@ No placeholders. No typos.
 **Structure:** All sections present and in order. All CTAs implemented.
 Nav links correct. Form fields match spec.
 
-**CSS Architecture:** No inline styles in HTML. No hardcoded values outside
-`02-design-system.css`. Variables used everywhere. No CSS in JS files.
+**Styling:** Tailwind config matches Design System exactly. No hardcoded
+color values in components. All design tokens come from config.
 
-**JS Architecture:** No inline scripts in HTML. Each module is self-contained.
-No global variable leaks. All IIFEs.
+**Animations:** Each section has appropriate entry animation. No janky
+transitions. GSAP ScrollTrigger properly cleaned up in `useEffect` return.
+`prefers-reduced-motion` respected.
 
 **Responsive:** Hero CTA above fold on 375px. No horizontal scroll.
 Touch targets ≥ 44px. All mobile adaptations from spec implemented.
 
-**Performance:** `defer` on all scripts. `loading="lazy"` below fold.
-`display=swap` on fonts. Preconnect hints present.
+**Performance:** `next/image` for all images. `next/font` for fonts.
+Dynamic imports for heavy components (R3F, Spline). No layout shift.
 
 **Accessibility:** Skip link, lang attribute, semantic elements, ARIA states,
-`prefers-reduced-motion`, form labels linked, focus styles visible.
+`prefers-reduced-motion` support, form labels linked, focus styles visible.
 
-### Step 10: Optional — Single-File Bundle
+### Step 12: Build & Export
 
-If the client needs a single deployable HTML file (for quick hosting, email,
-or platforms that require it), generate a bundled version:
+```bash
+npm run build      # Static export via next.config.js output: 'export'
+```
 
-See `references/build-assembly.md` for the bundling process.
+See `references/build-assembly.md` for deployment options and bundle optimization.
+
+## What Makes Each Project Unique
+
+Every LP uses the same stack but should feel completely different. Uniqueness comes from:
+
+| Layer | How It Varies |
+|-------|---------------|
+| **Colors** | Tailwind config: completely different palette per brand |
+| **Typography** | `next/font`: different font pairings per project |
+| **Animations** | Different Framer Motion variants: some playful, some corporate |
+| **Decorative effects** | Aurora for tech, grid for corporate, particles for creative |
+| **Layout patterns** | Split hero vs centered, card grid vs masonry, etc. |
+| **Scroll behavior** | Parallax depth, pin sections, reveal speed |
+| **Micro-interactions** | Magnetic buttons, hover effects, cursor effects |
+| **Background textures** | Noise grain, gradient blobs, dot patterns |
+
+**Anti-pattern: If two LPs feel similar, you're not using enough variation layers.**
 
 ## Delivery
 
 The builder delivers:
 
-1. **Project folder** with all 14 files (primary deliverable)
-2. **Bundled HTML** (optional, if requested) — single file with everything inlined
-3. **Build notes** — any ambiguities found in the spec, decisions made
+1. **Next.js project** — Complete, buildable, deployable
+2. **Static export** — `out/` folder with HTML/CSS/JS for any hosting
+3. **Build notes** — Ambiguities found, decisions made, effects chosen
 
 ## Integration
 
 **Input from**:
 - Page Specification (`lp-page-spec-assembler`, Phase 1)
-- Design System (Phase 2)
+- Design System (`lp-design-system`, Phase 2)
 
 **Output to**: `lp-page-qa` (validates the built page against the spec)
 
 ## References
 
-- `references/project-structure.md` — File responsibilities and naming conventions
-- `references/html-scaffold.md` — Complete HTML template with all meta, links, scripts
-- `references/css-architecture.md` — All 7 CSS files with complete templates
-- `references/js-modules.md` — All 6 JS modules with complete templates
-- `references/section-build-patterns.md` — HTML + CSS per section type (multi-file)
-- `references/nav-implementation.md` — Navigation across HTML/CSS/JS files
-- `references/form-implementation.md` — Form patterns by submission type
-- `references/animation-implementation.md` — Animation CSS + JS patterns
-- `references/build-assembly.md` — How to bundle into single-file for deployment
+| Reference | Purpose |
+|-----------|---------|
+| `references/project-scaffold.md` | Project setup, package.json, configs |
+| `references/tailwind-config.md` | Design System → Tailwind mapping |
+| `references/layout-scaffold.md` | app/layout.tsx + app/page.tsx templates |
+| `references/component-patterns.md` | Section components (React/TSX) |
+| `references/animation-system.md` | Framer Motion + GSAP + Lenis patterns |
+| `references/decorative-effects.md` | Background effects per aesthetic |
+| `references/nav-implementation.md` | Navbar + mobile menu components |
+| `references/form-implementation.md` | React Hook Form + Zod patterns |
+| `references/asset-library.md` | Curated assets, icons, stock, inspiration |
+| `references/build-assembly.md` | Build, export, deployment |

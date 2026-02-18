@@ -1,21 +1,94 @@
 ---
 name: animation-library
-description: Provides a set of pre-built, subtle animation patterns and the corresponding CSS/JS for implementation.
-metadata:
-  author: "[Your Name/Company]"
-  version: "1.0.0"
-  source: "Design System Workflow"
+description: Generates Framer Motion variants and GSAP configuration based on the aesthetic classification.
 ---
-# Animation Library Skill
 
-Your role is to act as a motion designer. Your task is to provide a small library of subtle, modern animation patterns that enhance the user experience without being distracting.
+# Animation Library
 
-## Rules of Execution
+Generate animation variants as **Framer Motion `Variants` objects** + timing configs.
 
-1.  **Focus on Subtlety:** The animations should be quick (200-400ms) and use gentle easing functions (e.g., `ease-out`).
-2.  **Provide Patterns:** Suggest 3 common animation patterns:
-    *   **Hover State:** A subtle lift/scale effect for interactive elements like cards or buttons.
-    *   **Scroll Reveal:** A gentle fade-in and slide-up effect for elements entering the viewport.
-    *   **Loading State:** A simple, elegant pulsing or shimmer effect.
-3.  **Provide Code:** For each pattern, provide the necessary CSS (`@keyframes`, `transition`) and, if necessary, the basic JavaScript `IntersectionObserver` setup for scroll reveals.
-4.  **Strict Output:** The output should be a list of animation patterns, each with a description and its corresponding code block.
+## Output Format
+
+```typescript
+// Output: lib/animations.ts
+import { type Variants } from 'framer-motion';
+
+// ── Entry Animations ────────────────────────
+
+export const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const fadeIn: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.5, ease: 'easeOut' },
+  },
+};
+
+export const scaleUp: Variants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const blurIn: Variants = {
+  hidden: { opacity: 0, filter: 'blur(10px)' },
+  visible: {
+    opacity: 1,
+    filter: 'blur(0px)',
+    transition: { duration: 0.8, ease: 'easeOut' },
+  },
+};
+
+// ── Container Orchestration ─────────────────
+
+export const staggerContainer: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,  // Adjust per aesthetic
+      delayChildren: 0.1,
+    },
+  },
+};
+
+export const staggerItem: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+```
+
+## Adaptation by Aesthetic
+
+| Property | Corporate | Startup | Creative | Premium | SaaS |
+|----------|-----------|---------|----------|---------|------|
+| **Duration** | 0.5-0.7s | 0.4-0.6s | 0.6-1.0s | 0.8-1.2s | 0.4-0.5s |
+| **Easing** | `[0.22, 1, 0.36, 1]` | `type: 'spring'` | `[0.76, 0, 0.24, 1]` | `[0.16, 1, 0.3, 1]` | `[0.22, 1, 0.36, 1]` |
+| **Spring stiffness** | — | 100 | — | — | 150 |
+| **Spring damping** | — | 15 | — | — | 20 |
+| **Stagger delay** | 0.08s | 0.1s | 0.12s | 0.15s | 0.08s |
+| **Y offset** | 20px | 30px | 40px | 20px | 20px |
+| **Blur effect?** | No | Optional | Yes | Yes | No |
+| **Scale effect?** | No | Yes | Yes | Minimal | No |
+
+## Rules
+
+1. **Output TypeScript** — Must be valid `Variants` type from `framer-motion`.
+2. **Include all standard variants** — `fadeUp`, `fadeIn`, `scaleUp`, `staggerContainer`, `staggerItem` minimum.
+3. **Match the aesthetic** — Duration and easing should match the brand personality.
+4. **Performance** — Use `transform` and `opacity` only. No `width`/`height` animations.
+5. **Accessibility** — All animated components must check `prefers-reduced-motion` via the animation wrapper.

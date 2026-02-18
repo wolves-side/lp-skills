@@ -1,114 +1,222 @@
 # Navigation Implementation
 
-Navigation spans 4 files. This reference shows what goes where.
+React components for navbar and mobile menu with Framer Motion animations.
 
 ---
 
-## File Map
+## Navbar Component
 
-| Concern | File |
-|---------|------|
-| HTML structure | `index.html` → `<header class="nav">` |
-| Desktop layout + base styles | `css/04-components.css` → `.nav-*` classes |
-| Mobile hamburger + overlay | `css/07-responsive.css` → `@media (max-width: 640px)` |
-| Scroll state + hamburger toggle + Escape | `js/nav.js` |
+```tsx
+// components/navigation/navbar.tsx
+'use client';
 
----
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { MobileMenu } from './mobile-menu';
+import { cn } from '@/lib/utils';
 
-## HTML (in index.html)
+interface NavLink {
+  label: string;
+  href: string;
+}
 
-See `html-scaffold.md` for the complete nav HTML pattern.
+interface NavbarProps {
+  logo: React.ReactNode;
+  links: NavLink[];
+  ctaText: string;
+  ctaHref: string;
+}
 
-Key structure:
+export function Navbar({ logo, links, ctaText, ctaHref }: NavbarProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileOpen]);
+
+  return (
+    <>
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className={cn(
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+          isScrolled
+            ? 'bg-background/80 backdrop-blur-xl border-b border-border shadow-sm'
+            : 'bg-transparent'
+        )}
+      >
+        <nav className="container mx-auto px-6 flex items-center justify-between h-16 md:h-20">
+          {/* Logo */}
+          <a href="#hero" className="font-display font-bold text-xl">
+            {logo}
+          </a>
+
+          {/* Desktop links */}
+          <ul className="hidden md:flex items-center gap-8">
+            {links.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="text-sm font-medium opacity-70 hover:opacity-100 transition-opacity"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          {/* Desktop CTA */}
+          <div className="hidden md:block">
+            <Button size="sm" asChild>
+              <a href={ctaHref}>{ctaText}</a>
+            </Button>
+          </div>
+
+          {/* Mobile toggle */}
+          <button
+            onClick={() => setIsMobileOpen(!isMobileOpen)}
+            className="md:hidden p-2"
+            aria-label={isMobileOpen ? 'Fechar menu' : 'Abrir menu'}
+            aria-expanded={isMobileOpen}
+          >
+            {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </nav>
+      </motion.header>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <MobileMenu
+            links={links}
+            ctaText={ctaText}
+            ctaHref={ctaHref}
+            onClose={() => setIsMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
 ```
-header.nav#nav
-  div.container.nav__inner
-    a.nav__logo          → always visible
-    nav.nav__links       → desktop only (hidden on mobile via CSS)
-    a.btn.nav__cta       → always visible (order 2 on mobile)
-    button.nav__hamburger → mobile only (hidden on desktop via CSS)
-  div.nav__mobile#navMobile → mobile overlay (controlled by JS)
+
+---
+
+## Mobile Menu Component
+
+Full-screen overlay with staggered link animation.
+
+```tsx
+// components/navigation/mobile-menu.tsx
+'use client';
+
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+
+interface MobileMenuProps {
+  links: { label: string; href: string }[];
+  ctaText: string;
+  ctaHref: string;
+  onClose: () => void;
+}
+
+export function MobileMenu({ links, ctaText, ctaHref, onClose }: MobileMenuProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl md:hidden"
+    >
+      <nav className="flex flex-col items-center justify-center h-full gap-8 px-6">
+        {links.map((link, i) => (
+          <motion.a
+            key={link.href}
+            href={link.href}
+            onClick={onClose}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ delay: 0.05 * i, duration: 0.3 }}
+            className="text-2xl font-display font-bold"
+          >
+            {link.label}
+          </motion.a>
+        ))}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 * links.length + 0.1, duration: 0.3 }}
+          className="mt-4"
+        >
+          <Button size="lg" asChild onClick={onClose}>
+            <a href={ctaHref}>{ctaText}</a>
+          </Button>
+        </motion.div>
+      </nav>
+    </motion.div>
+  );
+}
 ```
 
-**Critical mobile rule:** CTA stays visible between logo and hamburger.
-Order on mobile: Logo (1) — CTA (2) — Hamburger (3).
-
 ---
 
-## CSS: Desktop (in 04-components.css)
+## Usage in app/page.tsx
 
-All `.nav-*` styles for desktop are in `css/04-components.css`:
-- `.nav` — fixed positioning, z-index, transitions
-- `.nav--transparent` / `.nav--solid` — background states
-- `.nav__inner` — flexbox layout, height
-- `.nav__logo`, `.nav__link`, `.nav__cta` — individual elements
-- `.nav__hamburger` — `display: none` (shown in responsive)
-- `.nav__mobile` — `display: none` (shown in responsive)
-- `.nav__hamburger--open` — X animation for hamburger lines
-- `.nav__mobile-link`, `.nav__mobile-footer` — overlay content styles
+```tsx
+import { Navbar } from '@/components/navigation/navbar';
 
----
+const NAV_LINKS = [
+  { label: 'Problema', href: '#problem' },
+  { label: 'Solução', href: '#solution' },
+  { label: 'Resultados', href: '#proof' },
+  { label: 'FAQ', href: '#faq' },
+];
 
-## CSS: Mobile (in 07-responsive.css)
-
-The `@media (max-width: 640px)` block in `css/07-responsive.css` handles:
-- Reducing nav height to `var(--nav-height-mobile)`
-- Hiding `.nav__links` (desktop menu)
-- Showing `.nav__hamburger` with flex + ordering
-- Showing `.nav__mobile` as fixed overlay (controlled by `.nav__mobile--open`)
-- Adjusting `.nav__cta` size and order
-
----
-
-## JS Behavior (in js/nav.js)
-
-The `js/nav.js` module handles:
-
-1. **Scroll state** — switches `.nav--transparent` ↔ `.nav--solid`
-   - Transparent when over hero section
-   - Solid after scrolling past hero bottom (with 80px offset)
-   - Throttled with `requestAnimationFrame`
-
-2. **Hamburger toggle** — toggles `.nav__mobile--open`
-   - Toggles `aria-expanded` on hamburger button
-   - Toggles `aria-hidden` on mobile menu
-   - Locks body scroll when menu is open
-
-3. **Link close** — closes menu when clicking any link inside overlay
-
-4. **Escape key** — closes menu and returns focus to hamburger button
-
----
-
-## Accessibility Checklist
-
-- [ ] `<header>` has `role="banner"`
-- [ ] Desktop `<nav>` has `aria-label="Navegação principal"`
-- [ ] Mobile `<nav>` has `aria-label="Menu mobile"`
-- [ ] Hamburger has `aria-expanded="false"` (toggled by JS)
-- [ ] Hamburger has `aria-controls="navMobile"`
-- [ ] Mobile menu has `aria-hidden="true"` (toggled by JS)
-- [ ] Escape key closes menu and returns focus to hamburger
-- [ ] Logo link has `aria-label="[Company name] — voltar ao topo"`
-- [ ] All touch targets ≥ 44x44px
-
----
-
-## Testing
-
+export default function Home() {
+  return (
+    <>
+      <Navbar
+        logo={<span className="text-primary">Brand</span>}
+        links={NAV_LINKS}
+        ctaText="Falar com especialista"
+        ctaHref="#contact"
+      />
+      <main id="main">
+        {/* sections */}
+      </main>
+    </>
+  );
+}
 ```
-DESKTOP:
-  ✓ Nav transparent over hero, solid after scroll
-  ✓ Links scroll smoothly to sections (offset for nav height)
-  ✓ CTA button in nav is visible and clickable
-  ✓ No hamburger visible on desktop
 
-MOBILE (375px):
-  ✓ Only logo, CTA, and hamburger visible
-  ✓ Hamburger opens full-height overlay
-  ✓ Links in overlay scroll to sections and close overlay
-  ✓ CTA in overlay is full-width
-  ✓ Body scroll locked when overlay open
-  ✓ Escape closes overlay
-  ✓ X animation on hamburger when open
-```
+---
+
+## Smooth Scroll (via Lenis)
+
+Lenis handles smooth scrolling to anchor links automatically. No extra config needed
+as long as `LenisProvider` wraps the page in `app/layout.tsx`.
+
+Links like `<a href="#faq">` will smooth-scroll by default.
