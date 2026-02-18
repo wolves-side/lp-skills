@@ -3,7 +3,39 @@ name: lp-brief-synthesizer
 description: "Synthesize Brand Brief, Product Brief, and Competitive Analysis into a unified Landing Page Master Brief. Activate after all Phase 0 agents complete (brand-strategist, product-architect, competitive-intel), or when user has existing brand/product documents to combine into an LP brief. Resolves conflicts between documents, identifies remaining gaps, and produces the single source of truth for all downstream LP phases (copy, design, build, review). Part of the Landing Page Pipeline (Phase 0, final synthesis)."
 ---
 
+<HARD-GATE>
+Do NOT produce the Master Brief unless ALL THREE inputs are present and user-approved:
+Brand Brief ✓, Product Brief ✓, ICP Persona Profiles ✓.
+Missing inputs must be generated — never inferred or invented.
+</HARD-GATE>
+
+
 # LP Brief Synthesizer
+
+## Iron Law
+
+**Three Inputs or Nothing**: The Master Brief requires exactly three upstream documents. If any is missing, go back to the phase that generates it. Inference is not synthesis — it is fabrication.
+
+## Skill Type
+
+**Rigid** — All conflicts must be resolved before the brief is delivered. The GAP audit is mandatory. 🔴 blockers cannot be noted and ignored.
+
+
+
+## Checklist
+
+You MUST create a task for each item using TaskCreate and complete them in order:
+
+1. Verify all 3 inputs present: Brand Brief ✓, Product Brief ✓, ICP Persona Profiles ✓
+2. If any input missing: stop and return to its generating phase
+3. Run conflict detection across all 3 documents
+4. Resolve all conflicts: data > spec > conversion > simplicity > reversibility
+5. Run GAP audit — classify each gap as 🔴 / 🟡 / 🟢
+6. Resolve all 🔴 blockers with user before proceeding
+7. Write positioning statement and messaging hierarchy
+8. Define recommended page structure
+9. Deliver Master Brief and validate with user
+10. Invoke superpowers:dispatching-parallel-agents for lp-copywriter + lp-page-architect
 
 ## Purpose
 
@@ -137,6 +169,28 @@ Feeds directly into:
 - **Phase 2** — Design System Generation (visual direction from competitive gaps)
 - **Phase 3** — Page Generation (all content and structure)
 - **Phase 4** — Expert Panel Review (benchmark against brief)
+
+## Red Flags — STOP and Follow the Process
+
+| If you think... | Reality is... |
+|----------------|---------------|
+| "I only have 2 of 3 documents but can infer the third" | You cannot. Return to the missing phase. |
+| "The conflicts between documents are minor" | Unresolved conflicts become inconsistent messaging. Resolve all. |
+| "The 🔴 items aren't truly critical" | 🔴 means pipeline blocker. Resolve or get explicit user acceptance. |
+| "The brief is good enough with a few gaps" | Gaps in the Master Brief become gaps in copy, structure, and design. |
+
+**ALL of these mean: STOP. Return to the affected step.**
+
+## User Signals You're Off Track
+
+- "The positioning doesn't match our brand" → Conflict resolution went wrong. Re-read all 3 documents.
+- "This is missing [X]" → GAP audit was incomplete. Classify and resolve the gap.
+
+## Integration
+
+**Next required skill**: After Master Brief is approved, invoke `superpowers:dispatching-parallel-agents` to run `lp-copywriter` and `lp-page-architect` simultaneously.
+**Requires first**: Brand Brief + Product Brief + ICP Persona Profiles (all approved).
+**Feeds into**: `lp-copywriter` and `lp-page-architect` simultaneously.
 
 ## References
 

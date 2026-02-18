@@ -7,7 +7,38 @@ description: >
   Part of the Landing Page Pipeline (Phase 2).
 ---
 
+<HARD-GATE>
+Do NOT generate design tokens without the Copy Document, Page Blueprint, and Brand Brief
+all present. A design system built without content context produces visual choices that
+conflict with the page's emotional requirements.
+</HARD-GATE>
+
+
 # LP Design System — Tailwind + Framer Motion
+
+## Iron Law
+
+**Visual Serves Message**: Every design decision must reinforce the positioning statement and appeal to the priority ICP persona. Aesthetic preference without strategic alignment is decoration, not design.
+
+## Skill Type
+
+**Rigid** — Both stages (Design System Architect + Aesthetic Differentiator) are mandatory. Every project must produce a unique combination of palette, typography, and animation patterns.
+
+
+
+## Checklist
+
+You MUST create a task for each item using TaskCreate and complete them in order:
+
+1. Receive and review Copy Document, Page Blueprint, AND Brand Brief
+2. Stage 1 — Analyze visual assets and brand direction from all inputs
+3. Stage 1 — Generate color palette with full scale and semantic names
+4. Stage 1 — Define typography scale and generate complete Tailwind config extension
+5. Stage 2 — Classify aesthetic (Corporate / Startup / Creative / SaaS / Premium)
+6. Stage 2 — Generate component styles CSS for Shadcn UI overrides
+7. Stage 2 — Define Framer Motion animation variants matching the aesthetic
+8. Verify uniqueness: palette, typography, animations must be distinct from any "default" setup
+9. Deliver complete Design System
 
 ## Purpose
 
@@ -177,6 +208,28 @@ The Design System delivers ONE consolidated document containing:
 **Input from**: Page Specification (brand section, tone, audience)
 
 **Output to**: `lp-page-builder` → consumes all outputs during Step 3 (Configure Design System)
+
+## Red Flags — STOP and Follow the Process
+
+| If you think... | Reality is... |
+|----------------|---------------|
+| "I'll use the brand's hex colors directly in Tailwind" | Brand colors need LP adaptation for contrast, accessibility, CTA hierarchy. |
+| "Generic animation patterns work for any project" | The aesthetic classification determines animation style. Corporate ≠ Creative. |
+| "Tailwind's default type scale is fine" | Typography must be project-specific. Defaults signal no brand identity. |
+| "Two recent projects had similar aesthetics, I'll reuse" | Every project must produce a unique Design System. Reuse is a quality failure. |
+
+**ALL of these mean: STOP. Return to the relevant stage.**
+
+## User Signals You're Off Track
+
+- "The colors don't feel like our brand" → Palette was built without sufficient Brand Brief analysis. Re-run Stage 1.
+- "This looks like a template" → Aesthetic Differentiator not applied. Re-run Stage 2 with more variation.
+
+## Integration
+
+**Next required skill**: After Design System is delivered, invoke `lp-page-builder`.
+**Requires first**: Copy Document + Page Blueprint + Brand Brief.
+**Feeds into**: `lp-page-builder` (Tailwind config, Framer Motion variants, component styles).
 
 ## References
 

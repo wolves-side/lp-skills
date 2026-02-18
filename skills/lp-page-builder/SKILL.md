@@ -8,7 +8,43 @@ description: >
   Part of the Landing Page Pipeline (Phase 3, Step 1 of 2).
 ---
 
+<HARD-GATE>
+Do NOT write any component code until you have read BOTH the Copy Document (or Page
+Specification) AND the Design System output completely. Building before reading produces
+components that ignore the spec and override the design system with defaults.
+Read first. Build second. Always.
+</HARD-GATE>
+
+
 # LP Page Builder — React/Next.js Architecture
+
+## Iron Law
+
+**Spec is Contract**: Every piece of copy goes into the JSX VERBATIM. Every layout decision from the blueprint is implemented exactly. Every design token from the Design System is used. No rewording, no improvising, no "I think this looks better."
+
+## Skill Type
+
+**Rigid** — The 12-step build order is mandatory. Steps cannot be reordered or merged.
+
+
+
+## Checklist
+
+You MUST create a task for each step using TaskCreate before starting it:
+
+1. Read Copy Document completely (every section, every word)
+2. Read Design System completely (Tailwind config, Framer Motion variants, aesthetic classification)
+3. Scaffold Next.js project with full stack
+4. Configure Design System (tailwind.config.ts, globals.css, fonts.ts, animations.ts)
+5. Build animation components (ScrollReveal, StaggerChildren, Counter, Parallax, TextReveal, MagneticButton)
+6. Build decorative components matching aesthetic classification
+7. Build all section components verbatim from spec (one per section)
+8. Build navigation (navbar + mobile menu)
+9. Build forms if applicable
+10. Compose page (app/page.tsx)
+11. Add analytics and integrations
+12. Self-review all 7 categories (Content / Structure / Styling / Animations / Responsive / Performance / Accessibility)
+13. Build and export
 
 ## Purpose
 
@@ -376,6 +412,30 @@ The builder delivers:
 - Design System (`lp-design-system`, Phase 2)
 
 **Output to**: `lp-page-qa` (validates the built page against the spec)
+
+## Red Flags — STOP and Follow the Process
+
+| If you think... | Reality is... |
+|----------------|---------------|
+| "I know what a hero looks like, I'll use the standard pattern" | The spec defines THIS hero. Read it first. |
+| "I'll reword this headline slightly, it flows better" | Copy is VERBATIM. Every word in the spec was intentional. |
+| "The mobile layout isn't specified, I'll stack the desktop" | Flag the gap to the user. Do NOT guess mobile layout. |
+| "Performance targets are aspirational" | FCP < 1.5s and LCP < 2.5s are required acceptance criteria. |
+| "I'll skip the self-review and go straight to delivery" | Self-review catches spec violations before the QA skill does. Run it. |
+
+**ALL of these mean: STOP. Return to the current step.**
+
+## User Signals You're Off Track
+
+- "That's not what the spec says" → You improvised. Find the exact spec text and implement it.
+- "Where did this copy come from?" → You rewrote. Revert to verbatim spec copy immediately.
+- "The style doesn't match our brand" → Design System tokens were not applied. Check tailwind.config.ts.
+
+## Integration
+
+**Next required skill**: After the project builds successfully, invoke `lp-page-qa`.
+**Requires first**: Copy Document + Page Blueprint + Design System (all approved).
+**Feeds into**: `lp-page-qa` (validates built page against spec).
 
 ## References
 

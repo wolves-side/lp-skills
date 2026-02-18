@@ -3,7 +3,38 @@ name: lp-page-qa
 description: "Validate a built landing page HTML against the Page Specification. Activate after the page builder delivers the HTML file, or when user needs to audit an LP for content accuracy, structural compliance, responsive behavior, performance, and accessibility. Produces a QA Report with pass/fail/warning per check and specific fix instructions. Part of the Landing Page Pipeline (Phase 3, Step 2 of 2)."
 ---
 
+<HARD-GATE>
+Do NOT skip any QA category or individual check to save time. A page with 60 of 65 checks
+passing has 5 failures. Failures discovered post-deployment are broken user experiences
+that reduce conversion and damage brand credibility.
+</HARD-GATE>
+
+
 # LP Page QA
+
+## Iron Law
+
+**Zero Red Before Forward**: The page cannot advance to Expert Panel review with any 🔴 critical issues unresolved. 🔴 means broken. Fix before reviewing.
+
+## Skill Type
+
+**Rigid** — All 7 QA categories and all ~65 individual checks are mandatory. "Spot check" is not QA.
+
+
+
+## Checklist
+
+You MUST create a task for each category using TaskCreate:
+
+1. Category 1 — Content Accuracy: every headline, body, CTA, microcopy matches spec verbatim
+2. Category 2 — Structural Compliance: all sections present, in order, matching blueprint
+3. Category 3 — Responsive: test at 375px (mobile), 768px (tablet), 1440px (desktop)
+4. Category 4 — Design System Compliance: tokens correct, no hardcoded values
+5. Category 5 — Performance: FCP < 1.5s, LCP < 2.5s
+6. Category 6 — Accessibility: WCAG AA, semantic HTML, keyboard nav, ARIA states
+7. Category 7 — Interactions: scroll reveal, counters, FAQ accordion, nav scroll state
+8. Compile QA Report with 🔴/🟡/🟢 classification per issue
+9. Block advancement if any 🔴 issues present
 
 ## Purpose
 
@@ -247,6 +278,28 @@ Before delivering the QA report:
 **Output to**: Builder (fixes), then Phase 4 (Expert Panel reviews the fixed page)
 
 **Loop**: Builder fixes all 🔴 CRITICAL and 🟡 WARNING items → QA re-runs → repeat until clean.
+
+## Red Flags — STOP and Follow the Process
+
+| If you think... | Reality is... |
+|----------------|---------------|
+| "The page looks good visually, most checks covered" | Visual inspection covers ~1 of 7 categories. Run all systematically. |
+| "Accessibility is nice-to-have" | WCAG AA is a required target. Non-negotiable. |
+| "I'll note the 🔴 issues and expert panel can fix them" | 🔴 must be fixed BEFORE expert panel. Panel reviews quality, not broken pages. |
+| "Performance targets are aspirational" | FCP < 1.5s and LCP < 2.5s are hard requirements. |
+
+**ALL of these mean: STOP. Complete the current category systematically.**
+
+## User Signals You're Off Track
+
+- "You missed [issue]" → A category was not fully checked. Re-run that category completely.
+- "Why are you sending to expert panel with that issue?" → A 🔴 was not blocked. Fix it first.
+
+## Integration
+
+**For QA v1**: After QA Report v1 is complete, invoke `lp-expert-panel`.
+**For QA v2**: After `lp-page-rebuild`, re-run this skill. QA Report v2 must have zero 🔴.
+**Feeds into**: `lp-expert-panel` (QA v1) and final approval (QA v2).
 
 ## References
 

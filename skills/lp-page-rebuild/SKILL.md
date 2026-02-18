@@ -3,7 +3,39 @@ name: lp-page-rebuild
 description: "Apply Expert Panel feedback to a built landing page. Activate after the Expert Panel review (Phase 4) delivers prioritized feedback, or when user has specific improvements to apply to an existing LP HTML file. Resolves conflicting feedback, applies changes systematically, tracks all modifications, and produces an updated HTML file ready for final QA. Part of the Landing Page Pipeline (Phase 5 — final)."
 ---
 
+<HARD-GATE>
+Do NOT apply any feedback changes without first creating a written Change Plan showing
+the sequence of edits, their dependencies, and the cascade risk of each change.
+Applying changes without a plan introduces regressions that are nearly impossible to trace.
+Plan before touch, always.
+</HARD-GATE>
+
+
 # LP Page Rebuild
+
+## Iron Law
+
+**Plan Before Touch**: The Change Plan is written before the first edit is made. No exceptions, even for "obviously simple" changes. CSS cascade effects and component interdependencies are non-obvious.
+
+## Skill Type
+
+**Rigid** — The triage, Change Plan, sequential application, and cascade verification sequence is mandatory. "Apply all at once" is a reliability failure.
+
+
+
+## Checklist
+
+You MUST create a task for each item using TaskCreate and complete them in order:
+
+1. Receive HTML v1 + QA Report v1 + Expert Improvement Plan (all three required)
+2. Triage all feedback: Direct edits / Structural changes / Conflicts / Out-of-scope
+3. Resolve conflicts: data > spec > conversion > simplicity > reversibility
+4. Log out-of-scope items explicitly — do not apply them
+5. Write Change Plan: ordered list of changes with dependencies and cascade risk
+6. Apply changes one at a time following the Change Plan sequence
+7. After each change: verify no regression before proceeding
+8. Generate Change Log with before/after for every applied change
+9. Deliver HTML v2 + Change Log
 
 ## Purpose
 
@@ -251,6 +283,28 @@ Before delivering the rebuilt page:
 ```
 Phase 5 output → lp-page-qa re-run → FINAL PAGE ✅
 ```
+
+## Red Flags — STOP and Follow the Process
+
+| If you think... | Reality is... |
+|----------------|---------------|
+| "This is a small copy change, I don't need a Change Plan" | Every change goes in the plan. Small changes have cascade effects. |
+| "I'll apply all P1 changes together to save time" | One change at a time. Batching hides regressions. |
+| "Out-of-scope items are small, I'll add them while I'm here" | Log out-of-scope. Do not apply. Scope creep introduces unplanned regressions. |
+| "The Change Log is just documentation, I can skip it" | The Change Log is required for the QA re-run and future rebuilds. |
+
+**ALL of these mean: STOP. Return to the current step.**
+
+## User Signals You're Off Track
+
+- "You broke [feature] that was working before" → A cascade effect was not verified. Revert and re-plan.
+- "Why was [feedback] applied? I didn't ask for that" → Out-of-scope was applied. Revert it.
+
+## Integration
+
+**Next required skill**: After HTML v2 + Change Log delivered, invoke `lp-page-qa` for re-run.
+**Requires first**: HTML v1 + QA Report v1 + Expert Improvement Plan.
+**Feeds into**: `lp-page-qa` re-run (QA Report v2 must pass clean).
 
 ## References
 

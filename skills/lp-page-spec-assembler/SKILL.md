@@ -3,7 +3,35 @@ name: lp-page-spec-assembler
 description: "Assemble Copy Document and Page Blueprint into a unified Page Specification. Activate after both lp-copywriter and lp-page-architect complete, or when user has copy and structure documents ready for final assembly. Cross-validates copy against structure, ensures every section has both content and specs, resolves mismatches, and produces the single document that Phase 2 (Design System) and Phase 3 (Page Builder) execute. Part of the Landing Page Pipeline (Phase 1, final assembly)."
 ---
 
+<HARD-GATE>
+Do NOT produce the Page Specification without BOTH the Copy Document AND the Page Blueprint
+present and complete. Assembling with one input missing produces a spec with structural holes
+that the page builder cannot resolve.
+</HARD-GATE>
+
+
 # LP Page Spec Assembler
+
+## Iron Law
+
+**Both or Nothing**: The Page Specification requires both the Copy Document and the Page Blueprint. If either is missing or incomplete, go back to the skill that generates it.
+
+## Skill Type
+
+**Rigid** — Every section must have both copy content AND structural specification. Mismatches between copy and structure must be resolved before delivery.
+
+
+
+## Checklist
+
+You MUST create a task for each item using TaskCreate and complete them in order:
+
+1. Receive Copy Document AND Page Blueprint (both required)
+2. Cross-validate: every section in blueprint has copy, every copy block has a section
+3. Identify and resolve all mismatches
+4. Assemble unified Page Specification
+5. Verify every section has: copy content + layout spec + mobile spec + animation spec
+6. Deliver Page Specification
 
 ## Purpose
 
@@ -166,6 +194,21 @@ Feeds directly into:
 - **Phase 2** — Design System Generation (uses design direction + component inventory)
 - **Phase 3** — Page Generation (uses copy + wireframes + specs)
 - **Phase 4** — Expert Panel Review (uses this as the benchmark)
+
+## Red Flags — STOP and Follow the Process
+
+| If you think... | Reality is... |
+|----------------|---------------|
+| "I only have one document but can infer the other" | You cannot. Return to the missing skill. |
+| "Minor mismatches are fine" | Mismatches become builder ambiguity, which becomes improvised implementation. |
+
+**ALL of these mean: STOP. Resolve before assembling.**
+
+## Integration
+
+**Next required skill**: After Page Specification is delivered, invoke `lp-design-system` and `lp-page-builder`.
+**Requires first**: Copy Document (lp-copywriter) + Page Blueprint (lp-page-architect).
+**Feeds into**: `lp-page-builder` (the unified spec is the build contract).
 
 ## References
 

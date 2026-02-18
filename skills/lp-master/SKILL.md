@@ -3,13 +3,87 @@ name: lp-master
 description: "Skill orquestradora do pipeline AILD completo. Gerencia a execução sequencial de todas as skills do repositório, do Company & Product Discovery até o Deploy. Cada fase tem inputs definidos, outputs esperados, e checkpoints de qualidade que devem ser aprovados antes de avançar. Use esta skill quando um cliente pedir 'crie uma landing page' — ela conduz TODO o processo."
 ---
 
+<EXTREMELY-IMPORTANT>
+NO PHASE OF THE LANDING PAGE PIPELINE ADVANCES WITHOUT EXPLICIT USER
+CHECKPOINT APPROVAL.
+
+If the user has not said "yes, approved" or equivalent, you CANNOT start the next phase.
+"Looks good" without "let's proceed" is NOT approval. Ask explicitly every time.
+
+This is the Iron Pipeline Law. It cannot be suspended, optimized away, or skipped
+"just this once". Every phase exists because the output of the previous phase is required.
+Violating this law is not a shortcut — it is a pipeline failure.
+</EXTREMELY-IMPORTANT>
+
 # LP Master — Pipeline Orchestrator
+
+## Iron Law
+
+**Iron Pipeline Law**: No phase advances without explicit user checkpoint approval. No phase can be skipped. No content can be improvised from memory. Every document must come from its generating skill.
+
+## Skill Type
+
+**Rigid** — Every phase, every checkpoint, every skill invocation is mandatory. Adapting away from this discipline is a pipeline failure, not a shortcut.
 
 Você é o **diretor de projeto** do pipeline AILD. Seu trabalho é conduzir a criação de uma landing page completa do zero ao deploy, orquestrando **12 skills especializadas** em **8 fases sequenciais**.
 
-> **Regra de ouro**: NUNCA pule uma fase. NUNCA avance sem aprovação do usuário no checkpoint. NUNCA improvise conteúdo — cada skill tem sua metodologia e templates.
-
 ---
+
+## Pipeline Process Flow
+
+```dot
+digraph lp_master {
+    rankdir=TB;
+    "Usuário pede LP" [shape=doublecircle];
+    "Fase 1 — Empresa e Produto" [shape=box];
+    "Checkpoint 1 aprovado?" [shape=diamond];
+    "Fase 2 — ICP" [shape=box];
+    "Checkpoint 2 aprovado?" [shape=diamond];
+    "Fase 3 — Síntese" [shape=box];
+    "Checkpoint 3 aprovado?" [shape=diamond];
+    "Fase 4 — Copy + Estrutura (PARALELO)" [shape=box];
+    "Checkpoint 4 aprovado?" [shape=diamond];
+    "Fase 5 — Design System" [shape=box];
+    "Checkpoint 5 aprovado?" [shape=diamond];
+    "Fase 6 — Build" [shape=box];
+    "Checkpoint 6 aprovado?" [shape=diamond];
+    "Fase 7 — QA + Expert + Rebuild + QA" [shape=box];
+    "QA limpo?" [shape=diamond];
+    "Fix loop (max 3x)" [shape=box, style=filled, fillcolor=lightyellow];
+    "Checkpoint 7 aprovado?" [shape=diamond];
+    "Fase 8 — Deploy" [shape=box];
+    "LP LIVE" [shape=doublecircle];
+    "Ajustar e re-apresentar" [shape=box, style=filled, fillcolor=lightyellow];
+
+    "Usuário pede LP" -> "Fase 1 — Empresa e Produto";
+    "Fase 1 — Empresa e Produto" -> "Checkpoint 1 aprovado?";
+    "Checkpoint 1 aprovado?" -> "Fase 2 — ICP" [label="sim"];
+    "Checkpoint 1 aprovado?" -> "Ajustar e re-apresentar" [label="não"];
+    "Ajustar e re-apresentar" -> "Checkpoint 1 aprovado?";
+    "Fase 2 — ICP" -> "Checkpoint 2 aprovado?";
+    "Checkpoint 2 aprovado?" -> "Fase 3 — Síntese" [label="sim"];
+    "Checkpoint 2 aprovado?" -> "Ajustar e re-apresentar" [label="não"];
+    "Fase 3 — Síntese" -> "Checkpoint 3 aprovado?";
+    "Checkpoint 3 aprovado?" -> "Fase 4 — Copy + Estrutura (PARALELO)" [label="sim"];
+    "Checkpoint 3 aprovado?" -> "Ajustar e re-apresentar" [label="não"];
+    "Fase 4 — Copy + Estrutura (PARALELO)" -> "Checkpoint 4 aprovado?";
+    "Checkpoint 4 aprovado?" -> "Fase 5 — Design System" [label="sim"];
+    "Checkpoint 4 aprovado?" -> "Ajustar e re-apresentar" [label="não"];
+    "Fase 5 — Design System" -> "Checkpoint 5 aprovado?";
+    "Checkpoint 5 aprovado?" -> "Fase 6 — Build" [label="sim"];
+    "Checkpoint 5 aprovado?" -> "Ajustar e re-apresentar" [label="não"];
+    "Fase 6 — Build" -> "Checkpoint 6 aprovado?";
+    "Checkpoint 6 aprovado?" -> "Fase 7 — QA + Expert + Rebuild + QA" [label="sim"];
+    "Checkpoint 6 aprovado?" -> "Ajustar e re-apresentar" [label="não"];
+    "Fase 7 — QA + Expert + Rebuild + QA" -> "QA limpo?";
+    "QA limpo?" -> "Checkpoint 7 aprovado?" [label="sim"];
+    "QA limpo?" -> "Fix loop (max 3x)" [label="não"];
+    "Fix loop (max 3x)" -> "QA limpo?";
+    "Checkpoint 7 aprovado?" -> "Fase 8 — Deploy" [label="sim"];
+    "Checkpoint 7 aprovado?" -> "Ajustar e re-apresentar" [label="não"];
+    "Fase 8 — Deploy" -> "LP LIVE";
+}
+```
 
 ## Mapa do Pipeline
 
@@ -62,6 +136,32 @@ Você é o **diretor de projeto** do pipeline AILD. Seu trabalho é conduzir a c
 |-------|-------------------|
 | `lp-competitive-intel` | Dependia de web scraping de concorrentes, algo pouco confiável para LLMs. Os attack angles e diferenciação agora são tratados dentro do `lp-brand-strategist` e `lp-brief-synthesizer`. |
 | `lp-page-spec-assembler` | Era uma etapa de merge entre Copy Document e Page Blueprint. Esse merge agora é feito diretamente pelo `lp-page-builder`, que já recebe ambos os documentos e os unifica durante a construção. |
+
+---
+
+## Checklist de Execução
+
+Você DEVE criar uma task para cada fase usando TaskCreate antes de iniciá-la:
+
+1. Fase 1a — invocar lp-brand-strategist (Brand Brief)
+2. Fase 1b — invocar lp-product-architect (Product Brief)
+3. Checkpoint 1 — aprovação explícita do usuário
+4. Fase 2 — invocar lp-icp-discovery (Persona Profiles)
+5. Checkpoint 2 — aprovação explícita do usuário
+6. Fase 3 — invocar lp-brief-synthesizer (Master Brief)
+7. Checkpoint 3 — aprovação explícita do usuário
+8. Fase 4 — invocar superpowers:dispatching-parallel-agents → lp-copywriter + lp-page-architect
+9. Checkpoint 4 — aprovação explícita do usuário
+10. Fase 5 — invocar lp-design-system (Design System)
+11. Checkpoint 5 — aprovação explícita do usuário
+12. Fase 6 — invocar lp-page-builder (Projeto Next.js)
+13. Checkpoint 6 — aprovação explícita do usuário
+14. Fase 7a — invocar lp-page-qa (QA Report v1)
+15. Fase 7b — invocar lp-expert-panel (Improvement Plan)
+16. Fase 7c — invocar lp-page-rebuild (HTML v2)
+17. Fase 7d — invocar lp-page-qa novamente (QA Report v2 — deve passar limpo)
+18. Checkpoint 7 — aprovação explícita do usuário
+19. Fase 8 — invocar lp-deployment
 
 ---
 
@@ -205,6 +305,8 @@ Antes de avançar para Fase 4, confirmar com o usuário:
 **Skills**: `lp-copywriter` ∥ `lp-page-architect`
 **Duração estimada**: ~10 min
 **Tipo**: Automática (baseada no Master Brief)
+
+> **Execução paralela obrigatória**: Invocar `superpowers:dispatching-parallel-agents` para rodar lp-copywriter e lp-page-architect simultaneamente. NÃO execute sequencialmente — isso dobra o tempo sem nenhum benefício. Ambas recebem o Master Brief como input e produzem outputs independentes.
 
 ### Sequência de execução
 
@@ -441,6 +543,32 @@ Apresentar o HTML final ao usuário:
 - [ ] "Tudo funcionando no mobile?"
 
 > **Informar o usuário**: "🎉 Pipeline completo! Sua landing page está LIVE."
+
+---
+
+## Red Flags — PARE e Retorne ao Processo
+
+Se você pensa qualquer uma dessas coisas, PARE imediatamente:
+
+| Se você pensa... | A realidade é... |
+|-----------------|-----------------|
+| "Vou gerar o copy diretamente sem invocar lp-copywriter" | Cada fase tem uma skill. Invoque-a. Improvisar é uma falha de pipeline. |
+| "O checkpoint parece ok, posso avançar" | Checkpoint exige aprovação EXPLÍCITA do usuário, não a sua avaliação. |
+| "Esta fase é opcional para esse cliente" | Nenhuma fase é opcional. Se o usuário insistir, documente o risco — nunca decida sozinho. |
+| "Vou preencher os inputs a partir do contexto" | Nunca improvise inputs. Volte à fase que gera esse documento. |
+| "A análise de QA foi boa, não precisa do expert panel" | Fase 7 é uma sequência de 4 skills. Todas são obrigatórias. |
+| "Conheço bem essa marca, posso pular a entrevista" | Você não tem o Brand Brief. Invoque lp-brand-strategist. |
+| "O cliente está com pressa, vamos pular o design system" | Atalhos criam retrabalho. O pipeline completo é mais rápido que refazer. |
+
+**TODOS esses pensamentos significam: PARE. Volte ao início da fase atual.**
+
+## Sinais do Usuário que Algo Está Errado
+
+- "O copy não está com minha voz" → o Language Bank do Brand Brief foi incompleto. Volte à Fase 1.
+- "A estrutura não faz sentido" → o lp-page-architect não absorveu o Product Brief. Volte à Fase 4.
+- "Isso não representa minha marca" → checkpoint foi pulado. Corrija o documento e re-apresente.
+- "Por que já está no design se não aprovei o copy?" → você avançou sem aprovação. Volte ao checkpoint faltante.
+- "Não pedi para continuar ainda" → você inferiu aprovação. Pare e peça explicitamente.
 
 ---
 

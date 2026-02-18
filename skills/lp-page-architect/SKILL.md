@@ -3,7 +3,35 @@ name: lp-page-architect
 description: "Design the structural blueprint for a landing page. Activate after or alongside the LP copywriter, or when user needs to define page structure, section layout, content blocks, CTA placement strategy, scroll psychology, and responsive behavior. Takes the Master Brief and produces a detailed Page Blueprint with section-level specifications. Part of the Landing Page Pipeline (Phase 1, Agent 2 of 2)."
 ---
 
+<HARD-GATE>
+Do NOT make structural decisions without reading the complete Master Brief with focus on:
+recommended page structure, priority ICP persona, and competitive positioning. Structure
+exists to serve conversion, not aesthetic preferences or default templates.
+</HARD-GATE>
+
+
 # LP Page Architect
+
+## Iron Law
+
+**Conversion First**: Every structural decision requires a conversion rationale. "It looks good" is not a rationale. "It places the primary CTA above the fold for the priority persona" is.
+
+## Skill Type
+
+**Rigid** — Scroll psychology, CTA strategy (min 3, max 5), and mobile-first specifications are mandatory for every section.
+
+
+
+## Checklist
+
+You MUST create a task for each item using TaskCreate and complete them in order:
+
+1. Read Master Brief — focus on recommended page structure, priority ICP, competitive positioning
+2. Map scroll psychology: what state does the user arrive in? What state do they need for the CTA?
+3. Specify each section: layout pattern, background treatment, mobile behavior, animation style
+4. Map CTA strategy: minimum 3, maximum 5 CTAs with explicit placement rationale for each
+5. Validate mobile-first: every section works on 375px without horizontal scroll
+6. Deliver Page Blueprint
 
 ## Purpose
 
@@ -156,6 +184,28 @@ Before delivering, verify:
 
 **Key for Phase 2**: The visual weight and background specifications inform the
 Design System Generator's color and typography decisions.
+
+## Red Flags — STOP and Follow the Process
+
+| If you think... | Reality is... |
+|----------------|---------------|
+| "Full-width hero because it looks premium" | Structure follows conversion logic from the brief, not aesthetic defaults. |
+| "CTA at the end is standard" | Minimum 3 CTAs required. Map placement with explicit rationale. |
+| "Mobile is just stacking the desktop layout" | Mobile has distinct UX requirements. Specify per section. |
+| "The structure is obvious for this product type" | Even obvious structures need documentation. The builder has zero context. |
+
+**ALL of these mean: STOP. Complete the current specification fully.**
+
+## User Signals You're Off Track
+
+- "The structure doesn't make sense for our product" → You applied a template. Re-read brief, rethink flow.
+- "Why is the CTA there?" → Your placement lacks documented rationale. Re-justify or reposition.
+
+## Integration
+
+**Next required skill**: Deliver Page Blueprint (lp-master orchestrates next step).
+**Parallel with**: `lp-copywriter` — both run simultaneously from the Master Brief.
+**Feeds into**: `lp-page-builder` (structural contract).
 
 ## References
 

@@ -3,7 +3,37 @@ name: lp-product-architect
 description: "Map products/services and architect the offer strategy for landing page creation. Activate after brand-strategist completes, or when user wants to define what a landing page will sell, its offer structure, guarantee, objections, and conversion mechanics. Covers product mapping, offer construction, and campaign objective definition. Part of the Landing Page Pipeline (Phase 0, Agent 2 of 3)."
 ---
 
+<HARD-GATE>
+Do NOT classify the LP type or architect the offer until you have the complete Brand Brief.
+Offer construction without brand context produces misaligned positioning that no amount
+of copy or design can fix downstream.
+</HARD-GATE>
+
+
 # LP Product & Offer Architect
+
+## Iron Law
+
+**Offer First**: The offer must be fully architected (type, guarantee, urgency, objections, pricing) before any structural page decisions are made. An incomplete offer produces weak CTAs and low conversion regardless of copy quality.
+
+## Skill Type
+
+**Rigid** — All 3 deep-dive blocks are mandatory. LP type classification is mandatory. Offer mechanics cannot be left as "TBD".
+
+
+
+## Checklist
+
+You MUST create a task for each item using TaskCreate and complete them in order:
+
+1. Receive and read complete Brand Brief from lp-brand-strategist
+2. Classify LP type (1 of 7 types — explicit selection required)
+3. Complete Block 1 — Product deep-dive (features, mechanism, differentiation)
+4. Complete Block 2 — Offer mechanics (guarantee, urgency, pricing, bonuses)
+5. Complete Block 3 — Objections + Social Proof mapping
+6. Generate Product Brief
+7. Present to user for validation and apply corrections
+8. Invoke lp-icp-discovery
 
 ## Purpose
 
@@ -109,6 +139,29 @@ Before delivering, verify:
 **Output to**: `lp-brief-synthesizer` (combines Brand + Product + Competitive into master brief)
 
 **With lp-competitive-intel**: Competitor pricing and offer analysis informs anchoring strategy.
+
+## Red Flags — STOP and Follow the Process
+
+| If you think... | Reality is... |
+|----------------|---------------|
+| "I know what the offer is from the brand brief" | Product brief requires its own deep-dive. Brand brief ≠ product brief. |
+| "The guarantee can be generic" | Generic guarantees convert poorly. Push for specific, time-bound, measurable guarantees. |
+| "I'll figure out the LP type later" | LP type drives the entire page structure and copy strategy. Classify first. |
+| "The objections are obvious, I don't need to map them" | Unmapped objections become unanswered questions on the page = lost conversions. |
+
+**ALL of these mean: STOP. Return to the relevant deep-dive block.**
+
+## User Signals You're Off Track
+
+- "That's not our offer" → You made assumptions. Re-run Block 2 with the actual client.
+- "We don't have a guarantee like that" → You invented a guarantee. Ask what they're willing to offer.
+- "This is the wrong type of page" → LP type classification was wrong. Re-classify with the user.
+
+## Integration
+
+**Next required skill**: After Product Brief is validated, invoke `lp-icp-discovery`.
+**Never skip to**: `lp-brief-synthesizer` without `lp-icp-discovery` first.
+**Feeds into**: `lp-icp-discovery` (ICP context), `lp-brief-synthesizer` (synthesis input).
 
 ## References
 

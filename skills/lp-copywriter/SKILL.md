@@ -3,7 +3,39 @@ name: lp-copywriter
 description: "Write all landing page copy organized by section. Activate after Phase 0 Master Brief is complete, or when user has a brief and needs production-ready LP copy. Writes headlines, body paragraphs, CTAs, FAQ answers, testimonial framing, microcopy, and A/B test variants. Applies conversion copywriting frameworks (PAS, AIDA, Before-After-Bridge) adapted to each section's role. Outputs a Complete Copy Document. Part of the Landing Page Pipeline (Phase 1, Agent 1 of 2)."
 ---
 
+<HARD-GATE>
+Do NOT write a single line of copy until you have read the COMPLETE Master Brief —
+especially Part E (Messaging Architecture), Part C (The Offer), Part D (Competitive
+Positioning), and Part F (Page Structure). Copy written before internalizing the
+positioning statement and customer language bank is generic by definition.
+</HARD-GATE>
+
+
 # LP Copywriter
+
+## Iron Law
+
+**Brief Before Words**: Read the complete Master Brief before writing. Run all 5 quality checks on every section before delivering. No section is "obviously fine."
+
+## Skill Type
+
+**Rigid** — The section-by-section sequence, quality checks, A/B variant requirements, and validation checklist are mandatory. Copywriting intuition supplements the process; it does not replace it.
+
+
+
+## Checklist
+
+You MUST create a task for each item using TaskCreate and complete them in order:
+
+1. Read complete Master Brief — focus on Parts C, D, E, F
+2. Internalize positioning statement and customer language bank before writing word one
+3. Write copy section by section following the recommended page structure
+4. Apply all 5 quality checks per section (So What / Specificity / Voice / Customer Language / Differentiation)
+5. Generate 3 hero headline A/B variants (result / pain / mechanism angles)
+6. Generate 3 CTA text variants and 2 guarantee statement variants
+7. Write complete microcopy (CTA support, form labels, footer trust, alt text)
+8. Run 11-item validation checklist
+9. Deliver Copy Document
 
 ## Purpose
 
@@ -144,6 +176,30 @@ Before delivering, verify:
 **Parallel with**: `lp-page-architect` (Agent 2 can work simultaneously)
 
 **Output to**: `lp-page-spec-assembler` (combines copy + structure into final spec)
+
+## Red Flags — STOP and Follow the Process
+
+| If you think... | Reality is... |
+|----------------|---------------|
+| "I know enough to start writing the hero" | Read the complete brief first. Positioning statement changes everything. |
+| "I'll add specific numbers in a revision" | Specificity is the work, not a polish step. Generic copy is a deliverable failure. |
+| "This sounds right to me" | Run the 5 quality checks. Intuition is not the Voice or Differentiation test. |
+| "A/B variants are optional extras" | Hero (3), CTA (3), and guarantee (2) variants are required outputs. |
+| "The FAQ can address general objections" | FAQ must address the 5 MAPPED OBJECTIONS from the Master Brief. |
+
+**ALL of these mean: STOP. Return to the current step.**
+
+## User Signals You're Off Track
+
+- "This doesn't sound like us" → Voice test failed. Re-read Brand Voice, rewrite.
+- "These numbers aren't right" → You used estimates. Ask for actual metrics.
+- "A competitor could say this" → Differentiation test failed. Re-read attack angles, rewrite.
+
+## Integration
+
+**Next required skill**: Deliver Copy Document to `lp-page-builder` (via lp-master orchestration).
+**Parallel with**: `lp-page-architect` — both run simultaneously from the Master Brief.
+**Feeds into**: `lp-page-builder` (copy verbatim).
 
 ## References
 
