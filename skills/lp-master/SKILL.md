@@ -107,9 +107,10 @@ digraph lp_master {
 │  ├─ lp-copywriter ───────────────┐ (paralelo)                      │
 │  └─ lp-page-architect ──────────▶│ Copy Document + Page Blueprint   │
 │                          ▼                                          │
-│  FASE 5 ─ Design System                                            │
-│  └─ lp-design-system                                                │
-│     Output: CSS Tokens + Component Styles + Animations              │
+│  FASE 5 — Design Phase (3 skills sequenciais)                       │
+│  ├─ 5a: lp-color-typography ─────▶ Paleta + Tokens + Estética       │
+│  ├─ 5b: lp-motion-system ────────▶ Animações + Interações           │
+│  └─ 5c: lp-asset-system ─────────▶ Ícones + Backgrounds + Assets    │
 │                          ▼                                          │
 │  FASE 6 ─ Desenvolvimento Estrutural                                │
 │  └─ lp-page-builder                                                 │
@@ -152,8 +153,10 @@ Você DEVE criar uma task para cada fase usando TaskCreate antes de iniciá-la:
 7. Checkpoint 3 — aprovação explícita do usuário
 8. Fase 4 — invocar superpowers:dispatching-parallel-agents → lp-copywriter + lp-page-architect
 9. Checkpoint 4 — aprovação explícita do usuário
-10. Fase 5 — invocar lp-design-system (Design System)
-11. Checkpoint 5 — aprovação explícita do usuário
+10. Fase 5a — invocar lp-color-typography (Color & Typography System)
+11. Fase 5b — invocar lp-motion-system (Motion System)
+12. Fase 5c — invocar lp-asset-system (Asset System)
+13. Checkpoint 5 — aprovação explícita do usuário
 12. Fase 6 — invocar lp-page-builder (Projeto Next.js)
 13. Checkpoint 6 — aprovação explícita do usuário
 14. Fase 7a — invocar lp-page-qa (QA Report v1)
@@ -177,7 +180,7 @@ São 8 fases:
 2. 🎯 Pesquisa de ICP (quem é o cliente ideal)
 3. 📋 Síntese Estratégica (Master Brief)
 4. ✍️ Estratégia e Copy (textos, CTAs, hooks)
-5. 🎨 Design System (identidade visual)
+5. 🎨 Design Phase (cores, tipografia, animações, assets)
 6. 🔨 Desenvolvimento (HTML completo)
 7. 🔍 Análise + Revisão (QA, experts, rebuild)
 8. 🚀 Deploy (publicar)
@@ -338,47 +341,76 @@ Antes de avançar para Fase 5, confirmar com o usuário:
 - [ ] "Os CTAs estão alinhados?"
 - [ ] "Aprovado para avançar para design?"
 
-> **Informar o usuário**: "Fase 4 concluída ✅ — Copy e Blueprint aprovados. Passando para Fase 5: Design System."
+> **Informar o usuário**: "Fase 4 concluída ✅ — Copy e Blueprint aprovados. Passando para Fase 5: Design Phase."
 
 ---
 
-## FASE 5 — Design System
+## FASE 5 — Design Phase
 
-**Skill**: `lp-design-system`
-**Duração estimada**: ~5 min
-**Tipo**: Automática
+**Skills**: `lp-color-typography` → `lp-motion-system` → `lp-asset-system` (sequencial)
+**Duração estimada**: ~8-10 min
+**Tipo**: Automática (sequencial — cada skill alimenta a próxima)
 
 ### O que fazer
 
-1. Ativar `lp-design-system` seguindo seu `SKILL.md`
-2. **Stage 1** — Design System Architect:
-   - Analisar dados visuais do site existente (se houver) ou direção do Master Brief
-   - Gerar paleta de cores, tipografia, e design tokens
-3. **Stage 2** — Aesthetic Differentiator:
-   - Classificar a estética
-   - Gerar component styles em CSS
-   - Definir animation patterns
+#### 5a — Color & Typography System
+1. Ativar `lp-color-typography` seguindo seu `SKILL.md`
+2. Classificar a estética baseado no Master Brief
+3. Selecionar preset e customizar
+4. Gerar paleta completa com escalas (50-950)
+5. Selecionar tipografia com `clamp()` fluido
+6. Definir spacing, shadows, radius
+7. Gerar CSS tokens + Tailwind config + component styles
+8. **Se houver Design Overrides**: apresentar ao usuário antes de prosseguir
+
+#### 5b — Motion System
+1. Ativar `lp-motion-system` seguindo seu `SKILL.md`
+2. Carregar timing preset baseado na classificação estética
+3. Definir animações de entrada por seção
+4. Definir estados de interação (hover, focus, active)
+5. Definir coreografia (stagger sequences)
+6. Definir fallbacks de reduced-motion
+
+#### 5c — Asset System
+1. Ativar `lp-asset-system` seguindo seu `SKILL.md`
+2. Selecionar biblioteca de ícones
+3. Definir estratégia de backgrounds por seção
+4. Definir composição do hero
+5. Especificar tratamentos de gradiente e glass
+6. Gerar CSS copy-paste para todos os efeitos decorativos
+
+> **IMPORTANTE**: As 3 skills são sequenciais. `lp-motion-system` precisa da classificação estética de `lp-color-typography`. `lp-asset-system` precisa de ambos.
 
 ### Input
 
-- Copy Document + Page Blueprint (parte de design direction)
-- Brand Brief (cores, assets, identidade visual)
+- Copy Document + Page Blueprint (seções, hierarquia)
+- Master Brief (marca, ICP, posicionamento)
+- Brand Brief (cores existentes, assets, identidade visual)
 
 ### Output esperado
 
-- **CSS Design Tokens** (`:root` block completo)
-- **Aesthetic Classification** (look & feel definido)
-- **Component Styles** (CSS pronto para componentes)
-- **Animation Patterns** (micro-animations)
+- **Color & Typography System**: CSS Tokens + Tailwind Config + Component Styles + Aesthetic Classification
+- **Motion System**: Timing Presets + Entry Animations + Interaction States + Choreography
+- **Asset System**: Icon Library + Backgrounds + Hero Pattern + Gradient/Glass Recipes
+
+### Design Override Protocol
+
+As skills de design têm autoridade limitada para solicitar alterações no Page Specification quando estritamente necessário:
+- Conflitos de hierarquia tipográfica
+- Direção de cor que contradiz o posicionamento
+- Ritmo de seções que cria monotonia visual
+
+Se houver overrides, apresentar ao usuário antes de continuar.
 
 ### Checkpoint ✅
 
 Antes de avançar para Fase 6, confirmar com o usuário:
 - [ ] "A paleta de cores agrada?"
 - [ ] "As fontes combinam com a marca?"
-- [ ] "O estilo visual está na direção certa?"
+- [ ] "O sistema de animações está na intensidade certa?"
+- [ ] "O estilo visual geral está na direção certa?"
 
-> **Informar o usuário**: "Fase 5 concluída ✅ — Design System aprovado. Passando para Fase 6: Desenvolvimento."
+> **Informar o usuário**: "Fase 5 concluída ✅ — Design Phase aprovada (Color + Motion + Assets). Passando para Fase 6: Desenvolvimento."
 
 ---
 

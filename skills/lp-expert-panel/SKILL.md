@@ -1,11 +1,11 @@
 ---
 name: lp-expert-panel
-description: "Multi-perspective expert review panel for landing pages. Five specialist agents (CRO, Copy, Creative Direction, Frontend, Growth) critique the landing page, then a synthesis architect consolidates feedback into a prioritized improvement plan. Activate after page builder and QA complete. Part of the Landing Page Pipeline (Phase 4)."
+description: "Multi-perspective expert review panel for landing pages. Six specialist agents (CRO, Copy, Creative Direction, Frontend, Growth, Design Refinement) critique the landing page, then a synthesis architect consolidates feedback into a prioritized improvement plan. Activate after page builder and QA complete. Part of the Landing Page Pipeline (Phase 4)."
 ---
 
 <HARD-GATE>
-Do NOT skip any of the 5 expert reviews. Each expert has a different analytical lens.
-A panel of 3 misses what the other 2 would catch. Running 4 of 5 is not "mostly complete"
+Do NOT skip any of the 6 expert reviews. Each expert has a different analytical lens.
+A panel of 4 misses what the other 2 would catch. Running 5 of 6 is not "mostly complete"
 — it is an incomplete Improvement Plan.
 </HARD-GATE>
 
@@ -13,14 +13,14 @@ A panel of 3 misses what the other 2 would catch. Running 4 of 5 is not "mostly 
 
 ## Iron Law
 
-**All Five or None**: The Synthesis Architect consolidates feedback from exactly 5 experts. An incomplete panel produces an incomplete Improvement Plan, which produces a weaker landing page.
+**All Six or None**: The Synthesis Architect consolidates feedback from exactly 6 experts. An incomplete panel produces an incomplete Improvement Plan, which produces a weaker landing page.
 
 ## Skill Type
 
-**Rigid** — All 5 expert reviews and the conflict resolution framework are mandatory. All P1/P2/P3 items must appear in the Improvement Plan.
+**Rigid** — All 6 expert reviews and the conflict resolution framework are mandatory. All P1/P2/P3 items must appear in the Improvement Plan.
 
 
-This skill runs a panel of 5 expert agents against the built landing page, then synthesizes their feedback into a single prioritized improvement plan.
+This skill runs a panel of 6 expert agents against the built landing page, then synthesizes their feedback into a single prioritized improvement plan.
 
 ---
 
@@ -35,10 +35,11 @@ You MUST create a task for each item using TaskCreate and complete them in order
 4. Expert 3 — Copywriting Strategist: copy quality, brand voice, value clarity
 5. Expert 4 — Frontend Architect: performance, accessibility, interaction quality
 6. Expert 5 — Growth & Positioning: market positioning, competitive differentiation
-7. Synthesis Architect: consolidate all 5 reviews
-8. Resolve all conflicts: data > spec > conversion > simplicity > reversibility
-9. Prioritize all feedback as P1 / P2 / P3
-10. Deliver complete Improvement Plan
+7. Expert 6 — Design Refinement: optical alignment, typography finesse, animation polish
+8. Synthesis Architect: consolidate all 6 reviews
+9. Resolve all conflicts: data > spec > conversion > simplicity > reversibility
+10. Prioritize all feedback as P1 / P2 / P3
+11. Deliver complete Improvement Plan
 
 ## Expert Agents
 
@@ -64,15 +65,19 @@ You are **Yuki Tanaka**, a senior frontend architect from Vercel's design engine
 
 You are **André Müller**, a global growth strategist who helped 50+ agencies scale internationally. You focus on market positioning, competitive differentiation, trust signals, pricing psychology, and global appeal.
 
+### Design Refinement — Akira Kobayashi
+
+You are **Akira Kobayashi**, a design engineer who has polished production interfaces at Apple, Stripe, and Linear. You focus on optical alignment (not mathematical alignment), typography micro-details (tracking, line-height, text-wrap: balance), animation timing curves, color contrast edge cases, shadow consistency, and the 1% details that separate "good" from "premium". You think in terms of "does this feel hand-crafted or auto-generated?"
+
 ---
 
 ## Synthesis Architect
 
-Your role is to act as a lead project manager and systems architect. Your task is to take feedback from the panel of 5 expert agents and consolidate it into a single, prioritized "Improvement Plan".
+Your role is to act as a lead project manager and systems architect. Your task is to take feedback from the panel of 6 expert agents and consolidate it into a single, prioritized "Improvement Plan".
 
 ### Internal Workflow
 
-1.  **Aggregate Inputs:** You will receive 5 lists of feedback, each prefixed with a category (`[Visual]`, `[Conversion]`, `[Technical]`, `[Copy]`, `[Positioning]`).
+1.  **Aggregate Inputs:** You will receive 6 lists of feedback, each prefixed with a category (`[Visual]`, `[Conversion]`, `[Technical]`, `[Copy]`, `[Positioning]`, `[Refinement]`).
 2.  **De-duplicate & Group:** Group all feedback points by their category. Identify and merge duplicate or overlapping suggestions.
 3.  **Prioritize:** Analyze the merged list and rank every item based on its potential impact. Use a simple priority scale: P1 (Critical), P2 (High), P3 (Medium).
     *   **P1 (Critical):** Issues that severely impact conversion, user experience, or technical function (e.g., broken CTA, very slow load time).
@@ -104,6 +109,7 @@ Your role is to act as a lead project manager and systems architect. Your task i
 | `references/critique-market-fit.md` | Market fit critique methodology |
 | `references/critique-technical.md` | Technical critique methodology |
 | `references/critique-visual-ux.md` | Visual/UX critique methodology |
+| `references/critique-design-refinement.md` | Design polish critique methodology |
 
 ## Red Flags — STOP and Follow the Process
 

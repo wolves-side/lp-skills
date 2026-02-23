@@ -56,8 +56,32 @@ The combination of decorative effects, animation patterns, color palettes,
 typography, and layout variations should make each LP unmistakably its own.
 
 **Requires**:
-1. Page Specification from `lp-page-spec-assembler` (Phase 1)
-2. Design System from Phase 2 (Tailwind config + Framer Motion variants + aesthetic classification)
+1. Copy Document (from `lp-copywriter`) + Page Blueprint (from `lp-page-architect`)
+2. Color & Typography System (from `lp-color-typography`) — tokens, component styles, aesthetic classification
+3. Motion System (from `lp-motion-system`) — timing presets, entry animations, interaction states, choreography
+4. Asset System (from `lp-asset-system`) — icon library, backgrounds, hero pattern, gradient/glass recipes
+
+## Design Integration Checklist
+
+Before writing any code, verify ALL design phase outputs are present:
+
+- [ ] **Color tokens**: Full palette scales (50-950) in CSS variables
+- [ ] **Typography**: Font selection with `clamp()` fluid sizing
+- [ ] **Tailwind config**: Complete `tailwind.config.ts` extension block
+- [ ] **Component styles**: Button, card, input, section classes by aesthetic
+- [ ] **Shadow scale**: 5 levels with actual values
+- [ ] **Radius scale**: Per-component values
+- [ ] **Aesthetic classification**: Category + mood keywords + intensity
+- [ ] **Entry animations**: Per-section animation assignments
+- [ ] **Interaction states**: Hover, focus, active for all interactive elements
+- [ ] **Choreography**: Hero sequence, stagger rules
+- [ ] **Reduced motion**: Fallback plan defined
+- [ ] **Icon library**: Single selected library with size/color rules
+- [ ] **Background strategy**: Per-section layers defined
+- [ ] **Hero pattern**: Composition selected with layout CSS
+- [ ] **Gradient/glass recipes**: CSS for all decorative effects
+
+> If ANY item is missing, **stop and request it** from the responsible design skill before proceeding.
 
 ## Core Philosophy
 

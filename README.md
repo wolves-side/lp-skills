@@ -6,7 +6,7 @@ Um sistema de **15 skills de IA** que transforma uma conversa com um cliente em 
 
 O pipeline é orquestrado por uma **skill master** (`lp-master`) que conduz 8 fases sequenciais, do ICP Discovery ao Deploy. Cada skill é um agente especialista que recebe um input estruturado, executa seu trabalho, e entrega um output que alimenta o próximo agente.
 
-**15 skills | 59 arquivos | 8 fases | ~75 min de execução completa**
+**15 skills | 76 arquivos | 8 fases | ~75 min de execução completa**
 
 ---
 
@@ -37,15 +37,15 @@ lp-skills/
 │   ├── lp-icp-discovery/                    ← Pesquisa de cliente ideal
 │   ├── lp-brand-strategist/                 ← Entrevista de marca
 │   ├── lp-product-architect/                ← Mapeamento de produto/oferta
-│   ├── lp-competitive-intel/                ← Análise de concorrência
 │   ├── lp-brief-synthesizer/                ← Síntese → Master Brief
 │   ├── lp-copywriter/                       ← Copy completo da página
 │   ├── lp-page-architect/                   ← Estrutura e wireframes
-│   ├── lp-page-spec-assembler/              ← Merge → Page Specification
-│   ├── lp-design-system/                    ← Tokens CSS, componentes, animações
-│   ├── lp-page-builder/                     ← HTML self-contained
+│   ├── lp-color-typography/                 ← Cores, tipografia, tokens CSS
+│   ├── lp-motion-system/                    ← Animações, interações, choreography
+│   ├── lp-asset-system/                     ← Ícones, backgrounds, gradientes
+│   ├── lp-page-builder/                     ← Projeto Next.js completo
 │   ├── lp-page-qa/                          ← ~65 checks automatizados
-│   ├── lp-expert-panel/                     ← Painel de 5 especialistas
+│   ├── lp-expert-panel/                     ← Painel de 6 especialistas
 │   ├── lp-page-rebuild/                     ← Aplicação cirúrgica de feedback
 │   └── lp-deployment/                       ← Vercel, Cloudflare, Firebase
 ├── README.md
@@ -74,44 +74,46 @@ Processa informações brutas do negócio e gera 3-5 perfis detalhados de client
 
 ---
 
-### Fase 2 — Empresa e Produto (4 skills)
+### Fase 2 — Empresa e Produto (3 skills)
 
-**Skills:** `lp-brand-strategist` → `lp-product-architect` → `lp-competitive-intel` → `lp-brief-synthesizer` · **~20 min** · Interativa + Automática
+**Skills:** `lp-brand-strategist` → `lp-product-architect` → `lp-brief-synthesizer` · **~20 min** · Interativa + Automática
 
 O `lp-brand-strategist` conduz uma entrevista de ~15 minutos em 5 blocos: identidade, história do fundador, diferenciação, voz da marca e prova social. Tem "pressure questions" para respostas vagas.
 
 O `lp-product-architect` mapeia o produto/serviço, classifica o tipo de LP (7 tipos), e arquiteta a oferta: garantia, urgência real, price anchoring, mapa de objeções, e transformação BEFORE→AFTER→PROOF→MECHANISM.
 
-O `lp-competitive-intel` é 100% automatizado — scrapa concorrentes, analisa padrões de copy/visual/oferta, e gera "attack angles" para diferenciação.
-
-O `lp-brief-synthesizer` cruza os 3 documentos e sintetiza o Master Brief com positioning statement, messaging hierarchy, headlines candidatas, e GAP audit (🔴/🟡/🟢).
+O `lp-brief-synthesizer` cruza os documentos e sintetiza o Master Brief com positioning statement, messaging hierarchy, headlines candidatas, e GAP audit (🔴/🟡/🟢).
 
 **Output:** Master Brief — documento estratégico que alimenta todas as fases seguintes.
 
 ---
 
-### Fase 3 — Estratégia, Copy, CTA, Hooks (3 skills)
+### Fase 3 — Estratégia, Copy, CTA, Hooks (2 skills)
 
-**Skills:** `lp-copywriter` ∥ `lp-page-architect` → `lp-page-spec-assembler` · **~15 min** · Automática
+**Skills:** `lp-copywriter` ∥ `lp-page-architect` · **~15 min** · Automática
 
 O `lp-copywriter` e o `lp-page-architect` trabalham em **paralelo**:
 
 - **Copywriter**: escreve TODO o texto seção por seção com 7 frameworks psicológicos (PAS, BAB, Proof Stack, Risk Reversal...), gera 3 variantes A/B de headline e CTA, escreve microcopy completa.
 - **Page Architect**: define estrutura via scroll psychology, wireframes ASCII, CTA map, specs de animação, e comportamento mobile completo por breakpoint.
 
-O `lp-page-spec-assembler` cruza copy e estrutura, resolve mismatches, e gera o **Page Specification** (~400-800 linhas) — documento executável sem decisões pendentes.
-
-**Output:** Page Specification
+**Output:** Copy Document + Page Blueprint
 
 ---
 
-### Fase 4 — Design System
+### Fase 4 — Design Phase (3 skills)
 
-**Skill:** `lp-design-system` · **~5 min** · Automática
+**Skills:** `lp-color-typography` → `lp-motion-system` → `lp-asset-system` · **~8-10 min** · Automática (sequencial)
 
-Transforma direção visual abstrata em CSS concreto: paleta de cores com contraste validado, tipografia com pares de fontes selecionados, design tokens, component styles, e animation patterns. Cada cliente recebe um design system ÚNICO — a análise competitiva identificou padrões visuais para evitar.
+Três skills especializados executam em sequência, cada um alimentando o próximo:
 
-**Output:** CSS tokens + component styles + animation patterns
+- **Color & Typography** (`lp-color-typography`): Classifica a estética, gera paleta completa com escalas 50-950, seleciona tipografia com `clamp()` fluido, define spacing/shadows/radius, e entrega CSS tokens + Tailwind config + component styles. Inclui 5 presets estéticos com CSS real (Obsidian, Aurora, Monolith, Warm, Neon).
+- **Motion System** (`lp-motion-system`): Carrega timing preset baseado na classificação estética, define animações de entrada por seção, estados de interação (hover, focus, active), coreografia (stagger sequences), e fallbacks de reduced-motion.
+- **Asset System** (`lp-asset-system`): Seleciona biblioteca de ícones, define backgrounds multi-layer por seção, composição do hero, e tratamentos de gradiente/glass — tudo como CSS copy-paste.
+
+As skills de design têm **autoridade limitada** para solicitar alterações no Page Specification quando estritamente necessário (Design Override Protocol).
+
+**Output:** Color & Typography System + Motion System + Asset System
 
 ---
 
@@ -131,7 +133,7 @@ Gera um arquivo HTML ÚNICO, self-contained: todo CSS inline, todo JS inline (~5
 
 O `lp-page-qa` roda ~65 checks em 7 categorias (content, structure, responsive, design system, performance, accessibility, interactions). Cada check é binário com 3 níveis de severidade e instruções de fix específicas.
 
-O `lp-expert-panel` roda 5 especialistas simulados (CRO, Copy, Creative Direction, Frontend, Growth) que geram feedback priorizado, consolidado em um Improvement Plan (P1/P2/P3).
+O `lp-expert-panel` roda 6 especialistas simulados (CRO, Copy, Creative Direction, Frontend, Growth, Design Refinement) que geram feedback priorizado, consolidado em um Improvement Plan (P1/P2/P3).
 
 **Output:** QA Report + Expert Review + Improvement Plan
 
