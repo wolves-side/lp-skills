@@ -60,9 +60,9 @@ export function Navbar({ logo, links, ctaText, ctaHref }: NavbarProps) {
         animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+          'relative z-50 transition-all duration-300 w-full',
           isScrolled
-            ? 'bg-background/80 backdrop-blur-xl border-b border-border shadow-sm'
+            ? 'bg-background/95 backdrop-blur-xl border-b border-border/50 shadow-sm sticky top-0'
             : 'bg-transparent'
         )}
       >
