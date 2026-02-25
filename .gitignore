@@ -1,0 +1,17 @@
+# System & Editor
+.DS_Store
+.env
+.env.local
+.env.*
+node_modules/
+
+# Logs
+*.log
+
+# Simulation & Tests (not part of the core skill framework)
+test-simulation/
+*-app/
+
+# Build
+dist/
+build/
